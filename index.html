@@ -286,14 +286,61 @@ function goTab(id, btn) {
   btn.classList.add('on');
 }
 
-// ===== RECORDS =====
+// ===== RECORDS via /rankings (le #1 mondial = WR) =====
+async function getWR(evId, type) {
+  try {
+    const d = await wca('/rankings/'+evId+'/'+type+'?per_page=1');
+    const list = d.results || (Array.isArray(d)?d:null);
+    if (!list||!list.length) return null;
+    const r = list[0];
+    const best = parseInt(r.best,10);
+    if (!best||best<=0) return null;
+    return {time:fmt(best,evId), name:r.name||r.person_name||'?', country:r.country_iso2||r.country||'', wcaId:r.wca_id||'', comp:(r.competition_id||'').replace(/_/g,' ')};
+  } catch(e) { return null; }
+}
+
 async function loadRecords() {
+  const el = document.getElementById('rec-content');
+  const upd = document.getElementById('rec-updated');
+  const selEv = document.getElementById('recEvent').value;
+  el.innerHTML = '<div class="ld"><span class="spin"></span>Chargement…</div>';
+  const eventsToLoad = selEv ? [selEv] : ['333','222','pyram','skewb','333oh','333bf'];
+  try {
+    const pairs = [];
+    for (const ev of eventsToLoad) {
+      const [single, avg] = await Promise.all([getWR(ev,'single'), getWR(ev,'average')]);
+      if (single) pairs.push({ev, mode:'Single', ...single});
+      if (avg) pairs.push({ev, mode:'Average', ...avg});
+    }
+    if (!pairs.length) {
+      el.innerHTML = '<div class="empty">Impossible de charger. <a class="wca-link" href="https://www.worldcubeassociation.org/results/records" target="_blank">Voir sur WCA</a></div>';
+      return;
+    }
+    let h = '<div class="rec-grid">';
+    pairs.forEach(p => {
+      h += '<div class="rec-card" onclick="window.open(\'https://www.worldcubeassociation.org/persons/'+p.wcaId+'\',\'_blank\')">' +
+        '<div class="rec-type"><span class="badge-wr">WR</span>' + (EVT[p.ev]||p.ev) + ' · ' + p.mode + '</div>' +
+        '<div class="rec-time">' + p.time + '</div>' +
+        '<div class="rec-name">' + p.name + '</div>' +
+        '<div class="rec-meta">' + p.country + ' · ' + p.comp + '</div>' +
+      '</div>';
+    });
+    h += '</div>';
+    h += '<div style="text-align:center;margin-top:12px"><a class="wca-link" href="https://www.worldcubeassociation.org/results/records?show=mixed" target="_blank">→ Tous les records sur WCA</a></div>';
+    el.innerHTML = h;
+    upd.textContent = 'mis à jour ' + new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  } catch(e) {
+    el.innerHTML = '<div class="err">Erreur : '+e.message+'</div>';
+  }
+}
+
+async function loadRecords_UNUSED() {
   const el = document.getElementById('rec-content');
   const upd = document.getElementById('rec-updated');
   const evId = document.getElementById('recEvent').value;
   el.innerHTML = '<div class="ld"><span class="spin"></span>Chargement…</div>';
   try {
-    const d = await wca('/records' + (evId ? '?event_id='+evId : ''));
+    const d = {world_records:{}};
     const wr = d.world_records || d;
     const entries = Object.entries(wr).filter(([k,v])=>v&&typeof v==='object');
     if (!entries.length) { el.innerHTML = '<div class="empty">Aucun record trouvé.</div>'; return; }
