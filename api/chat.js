@@ -104,82 +104,90 @@ async function gatherWCAData(question) {
 }
 
 function buildSystemPrompt(wcaData) {
-  const prs = (person) => {
-    if (!person?.personal_records) return '';
-    return Object.entries(person.personal_records).map(([ev, d]) => {
-      const s = d.single ? `single: ${formatTime(d.single.best, ev)} (WR #${d.single.world_rank}, NR #${d.single.national_rank})` : '';
-      const a = d.average ? `avg: ${formatTime(d.average.best, ev)} (WR #${d.average.world_rank})` : '';
-      return `  ${EVENT_NAMES[ev]||ev}: ${[s,a].filter(Boolean).join(' | ')}`;
-    }).join('\n');
+  const safeTime = (val, ev) => {
+    const cs = parseInt(val, 10);
+    if (!cs || isNaN(cs) || cs <= 0) return '—';
+    return formatTime(cs, ev);
   };
+
+  const getName = (r) => r?.name || r?.person_name || r?.wca_id || '?';
+  const getCountry = (r) => r?.country_iso2 || r?.country || '';
+  const getComp = (r) => (r?.competition_id || '').replace(/_/g,' ');
+  const getBest = (r) => parseInt(r?.best, 10) || 0;
 
   let context = `Tu es CubeTracker, l'assistant speedcubing de Calixte OU (WCA ID: 2026OUCA01).
 Tu réponds en français, de façon concise et enthousiaste, comme un ami passionné de speedcubing.
-Tu utilises UNIQUEMENT les données WCA fournies ci-dessous — jamais tes connaissances internes pour les temps ou rankings (risque d'hallucination).
-Si une info n'est pas dans les données, dis-le clairement et suggère de reformuler.
+Tu utilises UNIQUEMENT les données WCA fournies ci-dessous — jamais tes connaissances internes pour les temps ou rankings.
+Si une info manque, dis-le clairement.\n\n`;
 
-SPEEDCUBERS SUIVIS PAR CALIXTE:
-- Calixte OU : 2026OUCA01
-- 2021ZAJD03
-- 2023GENG02  
-- 2019WANY36
-- 2016PILA03
-
-DONNÉES WCA EN TEMPS RÉEL:\n`;
-
-  if (wcaData.person) {
-    const p = wcaData.person.person || wcaData.person;
-    context += `\nPROFIL: ${p.name} (${p.wca_id}) — ${p.country} — ${p.competition_count} compétitions\nPR:\n${prs(p)}\n`;
-  }
-  if (wcaData.followedPersons?.length) {
-    wcaData.followedPersons.forEach(fp => {
-      const p = fp.person || fp;
-      context += `\nPROFIL SUIVI: ${p.name} (${p.wca_id}) — ${p.country}\nPR:\n${prs(p)}\n`;
-    });
-  }
+  // RECORDS
   if (wcaData.records) {
-    const wr = wcaData.records.world_records || {};
-    const evId = wcaData.recordEvent;
-    if (evId && wr[evId]) {
-      const s = wr[evId].single;
-      const a = wr[evId].average;
-      context += `\nRECORDS ${EVENT_NAMES[evId]||evId}:`;
-      if (s) context += `\n  WR Single: ${formatTime(s.best,evId)} par ${s.name} (${s.country_iso2||''}) — ${s.competition_id} ${s.date||''}`;
-      if (a) context += `\n  WR Average: ${formatTime(a.best,evId)} par ${a.name} (${a.country_iso2||''}) — ${a.competition_id} ${a.date||''}`;
-      context += '\n';
-    } else {
-      const top3 = Object.entries(wr).slice(0,3);
-      top3.forEach(([ev, d]) => {
-        if (d.single) context += `\n  WR ${EVENT_NAMES[ev]||ev} Single: ${formatTime(d.single.best,ev)} par ${d.single.name}`;
-      });
-      context += '\n';
+    const wr = wcaData.records?.world_records || wcaData.records || {};
+    context += 'RECORDS MONDIAUX ACTUELS:\n';
+    for (const [ev, evData] of Object.entries(wr)) {
+      const s = evData?.single;
+      const a = evData?.average;
+      const evName = EVENT_NAMES[ev] || ev;
+      if (s && getBest(s) > 0) {
+        context += `  ${evName} Single WR: ${safeTime(getBest(s), ev)} par ${getName(s)} (${getCountry(s)}) — ${getComp(s)}\n`;
+      }
+      if (a && getBest(a) > 0) {
+        context += `  ${evName} Average WR: ${safeTime(getBest(a), ev)} par ${getName(a)} (${getCountry(a)}) — ${getComp(a)}\n`;
+      }
     }
   }
+
+  // PERSONS
+  const addPerson = (fp) => {
+    const p = fp?.person || fp;
+    if (!p?.name) return;
+    context += `\nPROFIL: ${p.name} (${p.wca_id||''}) — ${p.country||''} — ${p.competition_count||0} compétitions\n`;
+    const prs = p.personal_records || {};
+    for (const [ev, d] of Object.entries(prs)) {
+      const s = d?.single, a = d?.average;
+      if (!s) continue;
+      const evName = EVENT_NAMES[ev] || ev;
+      context += `  ${evName}: single ${safeTime(s.best,ev)} (WR#${s.world_rank||'?'} NR#${s.national_rank||'?'})`;
+      if (a) context += ` | avg ${safeTime(a.best,ev)} (WR#${a.world_rank||'?'})`;
+      context += '\n';
+    }
+  };
+
+  if (wcaData.person) addPerson(wcaData.person);
+  if (wcaData.followedPersons?.length) wcaData.followedPersons.forEach(addPerson);
+
+  // RANKINGS FRANCE
   if (wcaData.franceRankings) {
     const ev = wcaData.franceEvent || '333';
-    const results = wcaData.franceRankings.results || wcaData.franceRankings;
-    if (Array.isArray(results)) {
-      context += `\nTOP FRANCE ${EVENT_NAMES[ev]||ev} SINGLE:\n`;
+    const results = wcaData.franceRankings?.results || wcaData.franceRankings || [];
+    if (Array.isArray(results) && results.length) {
+      context += `\nTOP FRANCE ${EVENT_NAMES[ev]||ev}:\n`;
       results.slice(0,10).forEach((r,i) => {
-        context += `  #${i+1} ${r.name||r.person_name} — ${formatTime(r.best,ev)}\n`;
+        context += `  #${i+1} ${getName(r)} — ${safeTime(getBest(r),ev)}\n`;
       });
     }
   }
+
+  // COMPETITIONS
   if (wcaData.upcomingComps) {
-    const comps = wcaData.upcomingComps.competitions || wcaData.upcomingComps;
-    if (Array.isArray(comps)) {
-      context += `\nPROCHAINES COMPÉTITIONS FRANCE:\n`;
+    const comps = wcaData.upcomingComps?.competitions || wcaData.upcomingComps || [];
+    if (Array.isArray(comps) && comps.length) {
+      context += '\nPROCHAINES COMPÉTITIONS FRANCE:\n';
       comps.slice(0,5).forEach(c => {
-        context += `  ${c.name} — ${c.city} — ${c.start_date} → ${c.end_date}\n`;
+        context += `  ${c.name} — ${c.city||''} — ${c.start_date||''}\n`;
       });
     }
   }
+
+  // SEARCH
   if (wcaData.searchResults) {
-    const persons = wcaData.searchResults.persons || [];
-    context += `\nRÉSULTATS RECHERCHE:\n`;
-    persons.forEach(p => {
-      context += `  ${p.name} (${p.wca_id}) — ${p.country_iso2} — ${p.competition_count} compétitions\n`;
-    });
+    const persons = wcaData.searchResults?.persons || [];
+    if (persons.length) {
+      context += '\nRÉSULTATS RECHERCHE:\n';
+      persons.forEach(p => {
+        context += `  ${p.name} (${p.wca_id}) — ${p.country_iso2||''} — ${p.competition_count||0} compétitions\n`;
+      });
+    }
   }
 
   return context;
