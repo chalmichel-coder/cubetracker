@@ -8,57 +8,40 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;--bg4:#22222e;
+  --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a24;
   --accent:#f5c842;--green:#39d98a;--blue:#4fc3f7;--red:#ff5252;--orange:#ff6b35;
   --text:#f0f0f8;--text2:#9999bb;--text3:#555577;--border:#2a2a3a;--r:10px;
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh}
 a{color:inherit;text-decoration:none}
 .app{max-width:720px;margin:0 auto;padding:16px 14px 40px}
-
-/* HEADER */
 .header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px}
 .logo em{color:var(--accent);font-style:normal}
 .logo small{display:block;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:var(--text3);letter-spacing:0;margin-top:-4px}
-.date{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 10px;margin-top:4px}
-
-/* TABS */
+.date-badge{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 10px;margin-top:4px;white-space:nowrap}
 .tabs{display:flex;gap:4px;background:var(--bg2);border-radius:var(--r);padding:4px;border:1px solid var(--border);margin-bottom:18px}
 .tab{flex:1;padding:8px 4px;text-align:center;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);border:none;background:transparent;transition:all .2s}
 .tab.on{background:var(--accent);color:#000;font-weight:600}
 .tab:hover:not(.on){background:var(--bg3);color:var(--text)}
-
-/* PANELS */
 .panel{display:none}.panel.on{display:block}
-
-/* LIVE HEADER */
 .live-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .live-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--green)}
 .live-sub{font-size:11px;color:var(--text3);margin-left:auto}
-
-/* CARDS */
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:border-color .15s}
 .card:hover{border-color:#3a3a4a}
 .card-body{padding:14px 16px}
-
-/* WR CARD */
 .wr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;letter-spacing:.5px}
 .badge-WR{background:#f5c84222;color:var(--accent);border:1px solid #f5c84244}
-.badge-CR{background:#4fc3f722;color:var(--blue);border:1px solid #4fc3f744}
-.badge-NR{background:#39d98a22;color:var(--green);border:1px solid #39d98a44}
 .wr-ev{font-size:12px;color:var(--text2)}
 .wr-row{display:flex;align-items:center;gap:14px}
 .wr-time{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--text);line-height:1}
-.wr-info{}
 .wr-name{font-size:13px;font-weight:500;color:var(--blue);cursor:pointer}
 .wr-name:hover{text-decoration:underline}
 .wr-meta{font-size:11px;color:var(--text3);margin-top:2px}
-
-/* PERSON CARD */
 .p-hd{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
 .avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;flex-shrink:0;border:1.5px solid var(--border)}
 .av-me{background:#f5c84215;color:var(--accent);border-color:#f5c84244}
@@ -72,8 +55,6 @@ a{color:inherit;text-decoration:none}
 .sl{font-size:9px;color:var(--text3);letter-spacing:.4px}
 .chevron{color:var(--text3);font-size:14px;margin-left:6px;transition:transform .25s;flex-shrink:0}
 .card.open .chevron{transform:rotate(180deg)}
-
-/* PR EXPAND */
 .p-detail{display:none;padding:0 16px 14px;border-top:1px solid var(--border)}
 .card.open .p-detail{display:block}
 .pr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:6px;margin-top:12px}
@@ -82,16 +63,12 @@ a{color:inherit;text-decoration:none}
 .pr-single{font-family:'DM Mono',monospace;font-size:13px;color:var(--text)}
 .pr-avg{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)}
 .pr-rank{font-size:10px;color:var(--text3);margin-top:2px}
-
-/* SEARCH */
 .s-row{display:flex;gap:8px;margin-bottom:14px}
 .s-row input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
 .s-row input:focus{border-color:var(--accent)}
 .s-row input::placeholder{color:var(--text3)}
 .s-row button{background:var(--accent);color:#000;border:none;border-radius:var(--r);padding:10px 18px;font-weight:600;font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
 .s-row button:hover{opacity:.85}
-
-/* CHATBOT */
 .chat-section{margin-top:28px;border-top:1px solid var(--border);padding-top:18px}
 .chat-label{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .chat-label span{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text3);font-weight:400;letter-spacing:0}
@@ -109,8 +86,6 @@ a{color:inherit;text-decoration:none}
 .suggestions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .sug{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s}
 .sug:hover{border-color:var(--accent);color:var(--accent)}
-
-/* UTILS */
 .spin{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px}
 @keyframes sp{to{transform:rotate(360deg)}}
 .loading{color:var(--text2);font-size:13px;padding:10px 0;display:flex;align-items:center}
@@ -121,8 +96,8 @@ a{color:inherit;text-decoration:none}
 .sec-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin:16px 0 8px}
 .source{font-size:11px;color:var(--text3);margin-top:14px}
 .calixte-banner{background:#f5c84210;border:1px solid #f5c84230;border-radius:var(--r);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px}
-.calixte-banner .name{font-weight:600;color:var(--accent);font-size:14px}
-.calixte-banner .sub{font-size:12px;color:var(--text2)}
+.calixte-banner .cb-name{font-weight:600;color:var(--accent);font-size:14px}
+.calixte-banner .cb-sub{font-size:12px;color:var(--text2)}
 </style>
 </head>
 <body>
@@ -132,7 +107,7 @@ a{color:inherit;text-decoration:none}
   <div>
     <div class="logo">CUBE<em>TRACKER</em><small>Dashboard WCA pour Calixte · données officielles en direct</small></div>
   </div>
-  <div class="date" id="dateBadge"></div>
+  <div class="date-badge" id="dateBadge"></div>
 </div>
 
 <div class="tabs">
@@ -157,7 +132,7 @@ a{color:inherit;text-decoration:none}
 <div class="panel" id="p-suivis">
   <div class="calixte-banner">
     <div>⭐</div>
-    <div><div class="name">Calixte OU · 2026OUCA01</div><div class="sub">Ton profil — clique pour voir tes PR</div></div>
+    <div><div class="cb-name">Calixte OU · 2026OUCA01</div><div class="cb-sub">Ton profil — clique pour voir tes PR</div></div>
   </div>
   <div id="suiviContent"><div class="loading"><span class="spin"></span>Chargement des profils…</div></div>
   <div class="source">Source : <a class="wca-link" href="https://www.worldcubeassociation.org" target="_blank">worldcubeassociation.org</a></div>
@@ -174,35 +149,48 @@ a{color:inherit;text-decoration:none}
   <div class="chat-section" id="chatSearch"></div>
 </div>
 
-</div><!-- /app -->
+</div>
 
 <script>
 const WCA = 'https://www.worldcubeassociation.org/api/v0';
 const CALIXTE = '2026OUCA01';
 const FRIENDS = ['2021ZAJD03','2023GENG02','2019WANY36','2016PILA03'];
-const ALL_IDS = [CALIXTE, ...FRIENDS];
 
-const EVT = {'333':'3x3x3','222':'2x2x2','444':'4x4x4','555':'5x5x5','666':'6x6x6','777':'7x7x7',
+const EVT = {
+  '333':'3x3x3','222':'2x2x2','444':'4x4x4','555':'5x5x5','666':'6x6x6','777':'7x7x7',
   '333bf':'3x3 Blind','333oh':'3x3 OH','333fm':'FMC','333mbf':'Multi-BLD',
   'pyram':'Pyraminx','skewb':'Skewb','sq1':'Square-1','minx':'Megaminx',
-  'clock':'Clock','444bf':'4x4 BLD','555bf':'5x5 BLD'};
+  'clock':'Clock','444bf':'4x4 Blind','555bf':'5x5 Blind'
+};
 
 function fmt(cs, ev) {
-  if(cs===-1)return'DNF';if(cs===-2)return'DNS';if(!cs||cs===0)return'—';
-  if(ev==='333fm')return cs+' mv';
-  if(ev==='333mbf'){const ms=cs%100,t=Math.floor(cs/100)%100000,d=99-Math.floor(cs/1e7),s=d+ms;return`${s}/${s+ms} ${Math.floor(t/60)}:${(t%60).toString().padStart(2,'0')}`;}
-  const tot=cs*10,c=Math.floor((tot%1000)/10),s=Math.floor(tot/1000)%60,m=Math.floor(tot/60000);
-  return m>0?`${m}:${s.toString().padStart(2,'0')}.${c.toString().padStart(2,'0')}`:`${s}.${c.toString().padStart(2,'0')}`;
+  const n = parseInt(cs, 10);
+  if (!n || isNaN(n) || n <= 0) return '—';
+  if (n === -1) return 'DNF';
+  if (n === -2) return 'DNS';
+  if (ev === '333fm') return n + ' mv';
+  if (ev === '333mbf') {
+    const missed = n % 100;
+    const t = Math.floor(n / 100) % 100000;
+    const diff = 99 - Math.floor(n / 10000000);
+    const solved = diff + missed;
+    return solved + '/' + (solved+missed) + ' ' + Math.floor(t/60) + ':' + (t%60).toString().padStart(2,'0');
+  }
+  const tot = n * 10;
+  const c = Math.floor((tot % 1000) / 10);
+  const s = Math.floor(tot / 1000) % 60;
+  const m = Math.floor(tot / 60000);
+  if (m > 0) return m + ':' + s.toString().padStart(2,'0') + '.' + c.toString().padStart(2,'0');
+  return s + '.' + c.toString().padStart(2,'0');
 }
+
 function rc(r){if(!r)return'var(--text3)';if(r===1)return'var(--accent)';if(r<=10)return'var(--orange)';if(r<=100)return'var(--blue)';if(r<=1000)return'var(--green)';return'var(--text2)';}
 function ini(n){return n?n.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase():'?';}
 async function wca(path){const r=await fetch(WCA+path);if(!r.ok)throw new Error('WCA '+r.status);return r.json();}
 
-// DATE
-document.getElementById('dateBadge').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+document.getElementById('dateBadge').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
 
-// TABS
-function tab(id,btn){
+function tab(id, btn) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.getElementById('p-'+id).classList.add('on');
@@ -210,193 +198,228 @@ function tab(id,btn){
 }
 
 // ===== RECORDS =====
-async function loadRecords(){
-  const el=document.getElementById('recContent');
-  try{
-    const d=await wca('/records');
-    const wr=d.world_records||{};
-    const evs=Object.keys(wr);
-    if(!evs.length){el.innerHTML='<div class="empty">Aucun record mondial trouvé pour le moment.</div>';return;}
-    let h='';let c=0;
-    for(const ev of evs){
-      if(c>=8)break;
-      const e=wr[ev];
-      if(e.single){h+=wrCard(e.single,ev,'WR','Single');c++;}
-      if(e.average&&c<8){h+=wrCard(e.average,ev,'WR','Average');c++;}
+async function loadRecords() {
+  const el = document.getElementById('recContent');
+  try {
+    const d = await wca('/records');
+    // L'API retourne { world_records: { '333': { single: {...}, average: {...} }, ... } }
+    const wr = d.world_records || d;
+    const evs = Object.keys(wr);
+    if (!evs.length) { el.innerHTML = '<div class="empty">Aucun record trouvé.</div>'; return; }
+
+    let h = ''; let c = 0;
+    for (const ev of evs) {
+      if (c >= 10) break;
+      const e = wr[ev];
+      if (!e || typeof e !== 'object') continue;
+
+      if (e.single) {
+        const s = e.single;
+        const best = parseInt(s.best, 10);
+        const name = s.name || s.person_name || '?';
+        const country = s.country_iso2 || s.country || '';
+        const comp = (s.competition_id || '').replace(/_/g,' ');
+        const date = s.date || '';
+        const wcaId = s.wca_id || '';
+        if (best > 0) { h += buildWrCard(ev, 'Single', best, name, country, comp, date, wcaId); c++; }
+      }
+      if (e.average && c < 10) {
+        const a = e.average;
+        const best = parseInt(a.best, 10);
+        const name = a.name || a.person_name || '?';
+        const country = a.country_iso2 || a.country || '';
+        const comp = (a.competition_id || '').replace(/_/g,' ');
+        const date = a.date || '';
+        const wcaId = a.wca_id || '';
+        if (best > 0) { h += buildWrCard(ev, 'Average', best, name, country, comp, date, wcaId); c++; }
+      }
     }
-    h+=`<div style="text-align:center;margin-top:8px"><a class="wca-link" href="https://www.worldcubeassociation.org/results/records?show=mixed" target="_blank">→ Tous les records sur WCA</a></div>`;
-    el.innerHTML=h;
-    document.getElementById('recUpdated').textContent='WCA API v0 · '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-  }catch(e){el.innerHTML=`<div class="err-msg">Erreur : ${e.message} — <a class="wca-link" href="https://www.worldcubeassociation.org/results/records" target="_blank">Voir sur WCA</a></div>`;}
+
+    if (!h) { el.innerHTML = '<div class="empty">Les données WCA sont chargées mais aucun temps valide trouvé.</div>'; return; }
+    h += '<div style="text-align:center;margin-top:8px"><a class="wca-link" href="https://www.worldcubeassociation.org/results/records?show=mixed" target="_blank">→ Tous les records sur WCA</a></div>';
+    el.innerHTML = h;
+    document.getElementById('recUpdated').textContent = 'WCA API v0 · ' + new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  } catch(e) {
+    el.innerHTML = '<div class="err-msg">Erreur : ' + e.message + ' — <a class="wca-link" href="https://www.worldcubeassociation.org/results/records" target="_blank">Voir sur WCA</a></div>';
+  }
 }
 
-function wrCard(r,ev,type,mode){
-  const url=`https://www.worldcubeassociation.org/persons/${r.wca_id}`;
-  return`<div class="card"><div class="card-body">
-    <div class="wr-top"><span class="badge badge-${type}">${type}</span><span class="wr-ev">${EVT[ev]||ev} — ${mode}</span></div>
-    <div class="wr-row">
-      <div class="wr-time">${fmt(r.best,ev)}</div>
-      <div class="wr-info">
-        <div class="wr-name" onclick="window.open('${url}','_blank')">${r.name||r.person_name||''}</div>
-        <div class="wr-meta">${r.country_iso2||''} · ${(r.competition_id||'').replace(/_/g,' ')} · ${r.date||''}</div>
-      </div>
-    </div>
-  </div></div>`;
+function buildWrCard(ev, mode, best, name, country, comp, date, wcaId) {
+  const url = 'https://www.worldcubeassociation.org/persons/' + wcaId;
+  const evName = EVT[ev] || ev;
+  const time = fmt(best, ev);
+  return '<div class="card"><div class="card-body">' +
+    '<div class="wr-top"><span class="badge badge-WR">WR</span><span class="wr-ev">' + evName + ' — ' + mode + '</span></div>' +
+    '<div class="wr-row">' +
+      '<div class="wr-time">' + time + '</div>' +
+      '<div>' +
+        '<div class="wr-name" onclick="window.open(\'' + url + '\',\'_blank\')">' + name + '</div>' +
+        '<div class="wr-meta">' + country + ' · ' + comp + ' · ' + date + '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div></div>';
 }
 
 // ===== PERSONS =====
-async function loadSuivis(){
-  const el=document.getElementById('suiviContent');
-  el.innerHTML='<div class="loading"><span class="spin"></span>Chargement de Calixte…</div>';
-  const calixte=await safePerson(CALIXTE);
-  let h='<div class="sec-label">Mon profil</div>'+personCard(calixte,CALIXTE,true);
-  h+='<div class="sec-label" style="margin-top:18px">Speedcubers suivis</div>';
-  el.innerHTML=h+'<div id="friendsLoading" class="loading"><span class="spin"></span>Chargement des amis…</div>';
-  const fh=[];
-  for(const id of FRIENDS){const p=await safePerson(id);fh.push(personCard(p,id,false));}
-  document.getElementById('friendsLoading').outerHTML=fh.join('');
+async function loadSuivis() {
+  const el = document.getElementById('suiviContent');
+  el.innerHTML = '<div class="loading"><span class="spin"></span>Chargement de Calixte…</div>';
+  const calixte = await safePerson(CALIXTE);
+  let h = '<div class="sec-label">Mon profil</div>' + personCard(calixte, CALIXTE, true);
+  h += '<div class="sec-label" style="margin-top:18px">Speedcubers suivis</div>';
+  el.innerHTML = h + '<div id="friendsLoading" class="loading"><span class="spin"></span>Chargement des amis…</div>';
+  const fh = [];
+  for (const id of FRIENDS) { const p = await safePerson(id); fh.push(personCard(p, id, false)); }
+  document.getElementById('friendsLoading').outerHTML = fh.join('');
 }
 
-async function safePerson(id){try{const d=await wca(`/persons/${id}`);return d.person||d;}catch(e){return null;}}
+async function safePerson(id) { try { const d = await wca('/persons/'+id); return d.person||d; } catch(e) { return null; } }
 
-function personCard(p,id,isMe){
-  if(!p)return`<div class="card"><div class="p-hd"><div class="avatar av-fr">?</div><div><div class="p-name">${id}</div><div class="p-id">Profil non trouvé</div></div></div></div>`;
-  const prs=p.personal_records||{};
-  const evs=Object.keys(prs);
-  const cc=p.competition_count||p.competitions_count||'—';
-  const av=isMe?'av-me':'av-fr';
-  let prH='';
-  if(evs.length){
-    prH='<div class="sec-label" style="margin-top:0">Personal Records</div><div class="pr-grid">';
-    evs.slice(0,16).forEach(ev=>{
-      const s=prs[ev]?.single,a=prs[ev]?.average;
-      if(!s)return;
-      prH+=`<div class="pr-item">
-        <div class="pr-ev">${EVT[ev]||ev}</div>
-        <div class="pr-single">${fmt(s.best,ev)}</div>
-        ${a?`<div class="pr-avg">avg ${fmt(a.best,ev)}</div>`:''}
-        <div class="pr-rank">WR: <span style="color:${rc(s.world_rank)}">#${s.world_rank||'—'}</span> NR: <span style="color:${rc(s.national_rank)}">#${s.national_rank||'—'}</span></div>
-      </div>`;
+function personCard(p, id, isMe) {
+  if (!p) return '<div class="card"><div class="p-hd"><div class="avatar av-fr">?</div><div><div class="p-name">' + id + '</div><div class="p-id">Profil non trouvé</div></div></div></div>';
+  const prs = p.personal_records || {};
+  const evs = Object.keys(prs);
+  const cc = p.competition_count || p.competitions_count || '—';
+  const av = isMe ? 'av-me' : 'av-fr';
+
+  let prH = '';
+  if (evs.length) {
+    prH = '<div class="sec-label" style="margin-top:0">Personal Records</div><div class="pr-grid">';
+    evs.slice(0,16).forEach(ev => {
+      const s = prs[ev] && prs[ev].single;
+      const a = prs[ev] && prs[ev].average;
+      if (!s) return;
+      prH += '<div class="pr-item">' +
+        '<div class="pr-ev">' + (EVT[ev]||ev) + '</div>' +
+        '<div class="pr-single">' + fmt(s.best,ev) + '</div>' +
+        (a ? '<div class="pr-avg">avg ' + fmt(a.best,ev) + '</div>' : '') +
+        '<div class="pr-rank">WR: <span style="color:' + rc(s.world_rank) + '">#' + (s.world_rank||'—') + '</span> NR: <span style="color:' + rc(s.national_rank) + '">#' + (s.national_rank||'—') + '</span></div>' +
+      '</div>';
     });
-    prH+='</div>';
-    if(evs.length>16)prH+=`<div class="empty">+${evs.length-16} épreuves sur <a class="wca-link" href="https://www.worldcubeassociation.org/persons/${id}" target="_blank">WCA</a></div>`;
+    prH += '</div>';
+    if (evs.length > 16) prH += '<div class="empty">+' + (evs.length-16) + ' épreuves sur <a class="wca-link" href="https://www.worldcubeassociation.org/persons/'+id+'" target="_blank">WCA</a></div>';
   }
-  return`<div class="card" id="c-${id}">
-    <div class="p-hd" onclick="toggleCard('${id}')">
-      <div class="avatar ${av}">${ini(p.name)}</div>
-      <div style="flex:1;min-width:0">
-        <div class="p-name">${p.name||id}</div>
-        <div class="p-id">${id}</div>
-        <div class="p-country">${p.country||''}</div>
-      </div>
-      <div class="p-stats">
-        <div class="stat"><span class="sv">${cc}</span><span class="sl">COMPS</span></div>
-        <div class="stat"><span class="sv">${evs.length}</span><span class="sl">EVENTS</span></div>
-      </div>
-      <div class="chevron">▾</div>
-    </div>
-    <div class="p-detail">
-      ${prH}
-      <div style="margin-top:10px"><a class="wca-link" href="https://www.worldcubeassociation.org/persons/${id}" target="_blank">→ Profil complet WCA</a></div>
-    </div>
-  </div>`;
+
+  return '<div class="card" id="c-' + id + '">' +
+    '<div class="p-hd" onclick="toggleCard(\'' + id + '\')">' +
+      '<div class="avatar ' + av + '">' + ini(p.name) + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="p-name">' + (p.name||id) + '</div>' +
+        '<div class="p-id">' + id + '</div>' +
+        '<div class="p-country">' + (p.country||'') + '</div>' +
+      '</div>' +
+      '<div class="p-stats">' +
+        '<div class="stat"><span class="sv">' + cc + '</span><span class="sl">COMPS</span></div>' +
+        '<div class="stat"><span class="sv">' + evs.length + '</span><span class="sl">EVENTS</span></div>' +
+      '</div>' +
+      '<div class="chevron">▾</div>' +
+    '</div>' +
+    '<div class="p-detail">' + prH +
+      '<div style="margin-top:10px"><a class="wca-link" href="https://www.worldcubeassociation.org/persons/' + id + '" target="_blank">→ Profil complet WCA</a></div>' +
+    '</div>' +
+  '</div>';
 }
 
-function toggleCard(id){document.getElementById('c-'+id)?.classList.toggle('open');}
+function toggleCard(id) { const c = document.getElementById('c-'+id); if(c) c.classList.toggle('open'); }
 
 // ===== SEARCH =====
-document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
-async function doSearch(){
-  const q=document.getElementById('searchInput').value.trim();
-  const el=document.getElementById('searchContent');
-  if(!q)return;
-  el.innerHTML='<div class="loading"><span class="spin"></span>Recherche…</div>';
-  try{
-    const isId=/^\d{4}[A-Z]{4}\d{2}$/i.test(q);
-    if(isId){
-      const p=await safePerson(q.toUpperCase());
-      el.innerHTML=p?personCard(p,q.toUpperCase(),false):'<div class="empty">Aucun compétiteur trouvé.</div>';
-      if(p)document.getElementById('c-'+q.toUpperCase())?.classList.add('open');
-    }else{
-      const d=await wca(`/persons?q=${encodeURIComponent(q)}&per_page=8`);
-      const ps=d.persons||[];
-      if(!ps.length){el.innerHTML='<div class="empty">Aucun résultat.</div>';return;}
-      el.innerHTML=ps.map(p=>`<div class="card" style="cursor:pointer" onclick="loadAndShow('${p.wca_id}')">
-        <div class="card-body">
-          <div style="font-weight:600;font-size:15px">${p.name}</div>
-          <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);margin-top:3px">${p.wca_id} · ${p.country_iso2||''} · ${p.competition_count||0} compétitions</div>
-        </div>
-      </div>`).join('');
+document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
+
+async function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  const el = document.getElementById('searchContent');
+  if (!q) return;
+  el.innerHTML = '<div class="loading"><span class="spin"></span>Recherche…</div>';
+  try {
+    const isId = /^\d{4}[A-Z]{4}\d{2}$/i.test(q);
+    if (isId) {
+      const p = await safePerson(q.toUpperCase());
+      el.innerHTML = p ? personCard(p, q.toUpperCase(), false) : '<div class="empty">Aucun compétiteur trouvé.</div>';
+      if (p) { const c = document.getElementById('c-'+q.toUpperCase()); if(c) c.classList.add('open'); }
+    } else {
+      const d = await wca('/persons?q=' + encodeURIComponent(q) + '&per_page=8');
+      const ps = d.persons || [];
+      if (!ps.length) { el.innerHTML = '<div class="empty">Aucun résultat.</div>'; return; }
+      el.innerHTML = ps.map(p =>
+        '<div class="card" style="cursor:pointer" onclick="loadAndShow(\'' + p.wca_id + '\')">' +
+        '<div class="card-body">' +
+        '<div style="font-weight:600;font-size:15px">' + p.name + '</div>' +
+        '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--text3);margin-top:3px">' + p.wca_id + ' · ' + (p.country_iso2||'') + ' · ' + (p.competition_count||0) + ' compétitions</div>' +
+        '</div></div>'
+      ).join('');
     }
-  }catch(e){el.innerHTML=`<div class="err-msg">Erreur : ${e.message}</div>`;}
+  } catch(e) { el.innerHTML = '<div class="err-msg">Erreur : ' + e.message + '</div>'; }
 }
-async function loadAndShow(id){
-  const el=document.getElementById('searchContent');
-  el.innerHTML='<div class="loading"><span class="spin"></span>Chargement…</div>';
-  const p=await safePerson(id);
-  el.innerHTML=p?personCard(p,id,false):'<div class="empty">Profil non trouvé.</div>';
-  document.getElementById('c-'+id)?.classList.add('open');
+
+async function loadAndShow(id) {
+  const el = document.getElementById('searchContent');
+  el.innerHTML = '<div class="loading"><span class="spin"></span>Chargement…</div>';
+  const p = await safePerson(id);
+  el.innerHTML = p ? personCard(p, id, false) : '<div class="empty">Profil non trouvé.</div>';
+  const c = document.getElementById('c-'+id);
+  if (c) c.classList.add('open');
 }
 
 // ===== CHATBOT =====
-const SUGGESTIONS={
-  records:['WR 3x3 actuel ?','Record du 2x2 ?','Meilleur temps Pyraminx ?'],
-  suivis:['PR de Calixte ?','Résultats de mes amis suivis ?','Qui a le meilleur WR ranking ?'],
-  search:['Compétitions France à venir ?','Top 10 France 3x3 ?','Cherche Max Park']
+const SUGS = {
+  records: ['WR 3x3 actuel ?','Record du 2x2 ?','Meilleur temps Pyraminx ?'],
+  suivis:  ['PR de Calixte ?','Résultats de mes amis ?','Classement de 2021ZAJD03 ?'],
+  search:  ['Compétitions France à venir ?','Top France 3x3 ?','Cherche Xuanyi Geng']
 };
 
-function buildChat(containerId,tabKey){
-  const sugs=SUGGESTIONS[tabKey]||[];
-  document.getElementById(containerId).innerHTML=`
-    <div class="chat-label">🤖 Demande à CubeTracker <span>Propulsé par Claude + API WCA officielle</span></div>
-    <div class="suggestions">${sugs.map(s=>`<div class="sug" onclick="sendSug(this,'${containerId}-msgs','${containerId}-inp')">${s}</div>`).join('')}</div>
-    <div class="chat-messages" id="${containerId}-msgs"><div class="msg msg-bot">Salut Calixte ! 👋 Pose-moi n'importe quelle question sur le speedcubing — records, classements, profils… Je vais chercher les vraies données sur WCA pour toi.</div></div>
-    <div class="chat-input-row">
-      <input id="${containerId}-inp" placeholder="Tape ta question…" onkeydown="if(event.key==='Enter')sendChat('${containerId}-msgs','${containerId}-inp')" />
-      <button onclick="sendChat('${containerId}-msgs','${containerId}-inp')" id="${containerId}-btn">↑</button>
-    </div>
-    <div style="font-size:10px;color:var(--text3);margin-top:8px">This information is based on competition results owned and maintained by the World Cube Association, published at worldcubeassociation.org/results</div>`;
+function buildChat(cid, key) {
+  const sugs = SUGS[key] || [];
+  document.getElementById(cid).innerHTML =
+    '<div class="chat-label">🤖 Demande à CubeTracker <span>Propulsé par Claude + API WCA officielle</span></div>' +
+    '<div class="suggestions">' + sugs.map(s => '<div class="sug" onclick="sendSug(this,\'' + cid + '-msgs\',\'' + cid + '-inp\')">' + s + '</div>').join('') + '</div>' +
+    '<div class="chat-messages" id="' + cid + '-msgs"><div class="msg msg-bot">Salut Calixte ! 👋 Pose-moi n\'importe quelle question sur le speedcubing — records, classements, profils… Je vais chercher les vraies données sur WCA pour toi.</div></div>' +
+    '<div class="chat-input-row">' +
+      '<input id="' + cid + '-inp" placeholder="Tape ta question…" onkeydown="if(event.key===\'Enter\')sendChat(\'' + cid + '-msgs\',\'' + cid + '-inp\')" />' +
+      '<button onclick="sendChat(\'' + cid + '-msgs\',\'' + cid + '-inp\')" id="' + cid + '-btn">↑</button>' +
+    '</div>' +
+    '<div style="font-size:10px;color:var(--text3);margin-top:8px">This information is based on competition results owned and maintained by the World Cube Association, published at worldcubeassociation.org/results</div>';
 }
 
-function sendSug(el,msgsId,inpId){
-  document.getElementById(inpId).value=el.textContent;
-  sendChat(msgsId,inpId);
+function sendSug(el, msgsId, inpId) {
+  document.getElementById(inpId).value = el.textContent;
+  sendChat(msgsId, inpId);
 }
 
-async function sendChat(msgsId,inpId){
-  const inp=document.getElementById(inpId);
-  const btn=document.getElementById(inpId.replace('-inp','-btn'));
-  const msgs=document.getElementById(msgsId);
-  const q=inp.value.trim();
-  if(!q)return;
-  inp.value='';
-  if(btn)btn.disabled=true;
+async function sendChat(msgsId, inpId) {
+  const inp = document.getElementById(inpId);
+  const btnId = inpId.replace('-inp','-btn');
+  const btn = document.getElementById(btnId);
+  const msgs = document.getElementById(msgsId);
+  const q = inp.value.trim();
+  if (!q) return;
+  inp.value = '';
+  if (btn) btn.disabled = true;
 
-  msgs.innerHTML+=`<div class="msg msg-user">${q}</div>`;
-  const thinking=document.createElement('div');
-  thinking.className='msg msg-bot';
-  thinking.innerHTML='<span class="spin"></span>Recherche sur WCA…';
+  msgs.innerHTML += '<div class="msg msg-user">' + q + '</div>';
+  const thinking = document.createElement('div');
+  thinking.className = 'msg msg-bot';
+  thinking.innerHTML = '<span class="spin"></span>Recherche sur WCA…';
   msgs.appendChild(thinking);
-  msgs.scrollTop=msgs.scrollHeight;
+  msgs.scrollTop = msgs.scrollHeight;
 
-  try{
-    const r=await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({question:q})
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({question: q})
     });
-    const d=await r.json();
-    thinking.innerHTML=d.error?`❌ ${d.error}`:d.answer;
-    if(d.error)thinking.classList.add('err');
-  }catch(e){
-    thinking.innerHTML='❌ Impossible de contacter le serveur.';
+    const d = await r.json();
+    thinking.innerHTML = d.error ? '❌ ' + d.error : d.answer;
+    if (d.error) thinking.classList.add('err');
+  } catch(e) {
+    thinking.innerHTML = '❌ Impossible de contacter le serveur.';
     thinking.classList.add('err');
   }
-  msgs.scrollTop=msgs.scrollHeight;
-  if(btn)btn.disabled=false;
+  msgs.scrollTop = msgs.scrollHeight;
+  if (btn) btn.disabled = false;
 }
 
-// ===== INIT =====
+// INIT
 buildChat('chatRecords','records');
 buildChat('chatSuivis','suivis');
 buildChat('chatSearch','search');
