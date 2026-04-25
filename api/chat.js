@@ -1,4 +1,3 @@
-// CubeTracker — chat.js v3 — WCA API + Claude
 const WCA_BASE = 'https://www.worldcubeassociation.org/api/v0';
 
 const EVENT_NAMES = {
@@ -10,7 +9,7 @@ const EVENT_NAMES = {
 
 function fmt(cs, ev) {
   const n = parseInt(cs, 10);
-  if (!n || isNaN(n)) return '?';
+  if (!n || isNaN(n) || n <= 0) return '?';
   if (n === -1) return 'DNF';
   if (n === -2) return 'DNS';
   if (ev === '333fm') return `${n} moves`;
@@ -31,14 +30,33 @@ function fmt(cs, ev) {
 
 async function wcaFetch(path) {
   const res = await fetch(`${WCA_BASE}${path}`);
-  if (!res.ok) throw new Error(`WCA ${res.status} — ${path}`);
+  if (!res.ok) throw new Error(`WCA ${res.status}`);
   return res.json();
+}
+
+function isAboutRecords(q) {
+  const keywords = ['record','wr','world','meilleur','actuel','3x3','2x2','4x4','5x5','6x6','7x7',
+    '333','222','444','555','666','777','pyraminx','pyram','skewb','megaminx','minx',
+    'square','sq1','clock','blindfolded','blind','oh','one hand','fewest','multi'];
+  return keywords.some(k => q.includes(k));
 }
 
 async function gatherWCAData(question) {
   const q = question.toLowerCase();
   const data = {};
 
+  // Toujours chercher les records si la question touche au speedcubing
+  if (isAboutRecords(q)) {
+    const evMatch = Object.keys(EVENT_NAMES).find(e => q.includes(e));
+    try {
+      const url = evMatch ? `/records?event_id=${evMatch}` : '/records';
+      data.records = await wcaFetch(url);
+      data.recordEvent = evMatch || null;
+      console.log('RECORDS_OK keys:', Object.keys(data.records.world_records || data.records).slice(0,5).join(','));
+    } catch(e) { console.log('records_err:', e.message); }
+  }
+
+  // WCA ID dans la question
   const idMatch = question.match(/\b(\d{4}[A-Z]{4}\d{2})\b/i);
   if (idMatch) {
     try {
@@ -47,6 +65,7 @@ async function gatherWCAData(question) {
     } catch(e) {}
   }
 
+  // Recherche par nom
   const nomMatch = q.match(/(?:profil|résultats|cherche|qui est)\s+(?:de |d')?([a-zàâéèêëîïôùûüç\s-]+)/);
   if (nomMatch && !idMatch) {
     const nom = nomMatch[1].trim();
@@ -55,36 +74,33 @@ async function gatherWCAData(question) {
     }
   }
 
-  if (q.includes('record') || q.includes(' wr') || q.includes('world') || q.includes('meilleur') || q.includes('actuel')) {
-    const evMatch = Object.keys(EVENT_NAMES).find(e => q.includes(e));
-    try {
-      const url = evMatch ? `/records?event_id=${evMatch}` : '/records';
-      data.records = await wcaFetch(url);
-      data.recordEvent = evMatch || null;
-      console.log('WCA_RECORDS_KEYS:', JSON.stringify(Object.keys(data.records)));
-      const wr = data.records.world_records || data.records;
-      const firstKey = Object.keys(wr)[0];
-      if (firstKey) console.log('WCA_FIRST_EVENT:', firstKey, JSON.stringify(wr[firstKey]).slice(0,200));
-    } catch(e) { console.log('records_error:', e.message); }
-  }
-
+  // Classement France
   if (q.includes('france') || q.includes('français') || q.includes('classement')) {
     const evMatch = Object.keys(EVENT_NAMES).find(e => q.includes(e)) || '333';
-    try { data.franceRankings = await wcaFetch(`/rankings/${evMatch}/single?region=France&per_page=10`); data.franceEvent = evMatch; } catch(e) {}
+    try {
+      data.franceRankings = await wcaFetch(`/rankings/${evMatch}/single?region=France&per_page=10`);
+      data.franceEvent = evMatch;
+    } catch(e) {}
   }
 
-  if (q.includes('compétition') || q.includes('competition') || q.includes('prochain')) {
+  // Compétitions à venir
+  if (q.includes('compétition') || q.includes('competition') || q.includes('prochain') || q.includes('agenda') || q.includes('quand')) {
     try {
       const today = new Date().toISOString().split('T')[0];
       data.upcomingComps = await wcaFetch(`/competitions?country_iso2=FR&start=${today}&per_page=6`);
     } catch(e) {}
   }
 
+  // Speedcubers suivis
   const suivis = ['2026OUCA01','2021ZAJD03','2023GENG02','2019WANY36','2016PILA03'];
-  if (q.includes('calixte') || q.includes('suivi') || q.includes('ami') || q.includes('copain') || suivis.some(id => q.includes(id.toLowerCase()))) {
+  if (q.includes('calixte') || q.includes('suivi') || q.includes('ami') || q.includes('copain') ||
+      suivis.some(id => q.includes(id.toLowerCase()))) {
     data.followedPersons = [];
     for (const id of suivis) {
-      try { const r = await wcaFetch(`/persons/${id}`); data.followedPersons.push(r.person || r); } catch(e) {}
+      try {
+        const r = await wcaFetch(`/persons/${id}`);
+        data.followedPersons.push(r.person || r);
+      } catch(e) {}
     }
   }
 
@@ -97,8 +113,8 @@ function formatPerson(p) {
   const prs = p.personal_records || {};
   for (const [ev, d] of Object.entries(prs)) {
     const evName = EVENT_NAMES[ev] || ev;
-    const si = d.single ? `single: ${fmt(d.single.best, ev)} (WR#${d.single.world_rank||'?'} NR#${d.single.national_rank||'?'})` : '';
-    const av = d.average ? `avg: ${fmt(d.average.best, ev)} (WR#${d.average.world_rank||'?'})` : '';
+    const si = d.single ? `single: ${fmt(d.single.best,ev)} (WR#${d.single.world_rank||'?'} NR#${d.single.national_rank||'?'})` : '';
+    const av = d.average ? `avg: ${fmt(d.average.best,ev)} (WR#${d.average.world_rank||'?'})` : '';
     if (si || av) s += `  ${evName}: ${[si,av].filter(Boolean).join(' | ')}\n`;
   }
   return s;
@@ -106,38 +122,53 @@ function formatPerson(p) {
 
 function buildPrompt(wcaData) {
   let ctx = `Tu es CubeTracker, l'assistant speedcubing de Calixte OU (WCA ID: 2026OUCA01).
-Réponds en français, enthousiaste et concis, comme un ami passionné de speedcubing.
-RÈGLE : utilise UNIQUEMENT les données ci-dessous. Ne jamais inventer de temps ou rankings.\n\n`;
+Réponds en français, de façon enthousiaste et concise.
 
+RÈGLE ABSOLUE : tu utilises UNIQUEMENT les données WCA fournies ci-dessous.
+Si une donnée n'est pas dans ces données, réponds : "Je ne trouve pas cette donnée dans l'API WCA en ce moment. Vérifie sur worldcubeassociation.org"
+NE JAMAIS inventer un temps, un nom, ou un ranking. JAMAIS.\n\n`;
+
+  // RECORDS
   if (wcaData.records) {
     const wr = wcaData.records.world_records || wcaData.records;
-    ctx += '=== RECORDS MONDIAUX WCA ===\n';
+    ctx += '=== RECORDS MONDIAUX WCA (données officielles temps réel) ===\n';
+    let count = 0;
     for (const [evId, evData] of Object.entries(wr)) {
       if (typeof evData !== 'object' || !evData) continue;
       const evName = EVENT_NAMES[evId] || evId;
-      const s = evData.single;
-      const a = evData.average;
-      if (s) {
+      if (evData.single) {
+        const s = evData.single;
         const best = parseInt(s.best, 10);
-        const name = s.name || s.person_name || s.wca_id || '?';
+        const name = s.name || s.person_name || '?';
         const country = s.country_iso2 || s.country || '';
         const comp = (s.competition_id || '').replace(/_/g,' ');
-        if (best > 0) ctx += `${evName} Single WR: ${fmt(best,evId)} par ${name} (${country}) @ ${comp}\n`;
+        const date = s.date || '';
+        if (best > 0) {
+          ctx += `${evName} Single WR: ${fmt(best,evId)} par ${name} (${country}) @ ${comp} ${date}\n`;
+          count++;
+        }
       }
-      if (a) {
+      if (evData.average) {
+        const a = evData.average;
         const best = parseInt(a.best, 10);
-        const name = a.name || a.person_name || a.wca_id || '?';
+        const name = a.name || a.person_name || '?';
         const country = a.country_iso2 || a.country || '';
         const comp = (a.competition_id || '').replace(/_/g,' ');
-        if (best > 0) ctx += `${evName} Average WR: ${fmt(best,evId)} par ${name} (${country}) @ ${comp}\n`;
+        const date = a.date || '';
+        if (best > 0) {
+          ctx += `${evName} Average WR: ${fmt(best,evId)} par ${name} (${country}) @ ${comp} ${date}\n`;
+          count++;
+        }
       }
     }
+    ctx += count === 0 ? '(Aucun record disponible dans la réponse API)\n' : '';
     ctx += '\n';
   }
 
   if (wcaData.person) ctx += '=== PROFIL ===\n' + formatPerson(wcaData.person) + '\n';
+
   if (wcaData.followedPersons?.length) {
-    ctx += '=== SPEEDCUBERS SUIVIS ===\n';
+    ctx += '=== SPEEDCUBERS SUIVIS PAR CALIXTE ===\n';
     wcaData.followedPersons.forEach(p => { ctx += formatPerson(p); });
     ctx += '\n';
   }
@@ -158,7 +189,7 @@ RÈGLE : utilise UNIQUEMENT les données ci-dessous. Ne jamais inventer de temps
     const list = wcaData.upcomingComps.competitions || wcaData.upcomingComps;
     if (Array.isArray(list) && list.length) {
       ctx += '=== PROCHAINES COMPÉTITIONS FRANCE ===\n';
-      list.forEach(c => { ctx += `${c.name} — ${c.city||''} — ${c.start_date||''}\n`; });
+      list.forEach(c => { ctx += `${c.name} — ${c.city||''} — ${c.start_date||''} → ${c.end_date||''}\n`; });
       ctx += '\n';
     }
   }
@@ -179,7 +210,7 @@ export default async function handler(req, res) {
   const { question } = req.body;
   if (!question) return res.status(400).json({ error: 'Question manquante' });
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) return res.status(500).json({ error: 'Clé API Anthropic manquante dans Vercel' });
+  if (!apiKey) return res.status(500).json({ error: 'Clé API Anthropic manquante' });
 
   try {
     const wcaData = await gatherWCAData(question);
@@ -187,7 +218,11 @@ export default async function handler(req, res) {
 
     const claudeRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 800,
@@ -203,6 +238,7 @@ export default async function handler(req, res) {
 
     const claudeData = await claudeRes.json();
     res.status(200).json({ answer: claudeData.content?.[0]?.text || 'Pas de réponse.' });
+
   } catch(e) {
     console.error('CubeTracker error:', e.message);
     res.status(500).json({ error: e.message });
