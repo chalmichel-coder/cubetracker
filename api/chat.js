@@ -65,6 +65,7 @@ async function gatherWCAData(question) {
     try {
       const rec = await wcaFetch(`/records${eventMatch ? `?event_id=${eventMatch}` : ''}`);
       data.records = rec;
+console.log('WCA RECORDS RAW:', JSON.stringify(rec).slice(0, 500));
       if (eventMatch) data.recordEvent = eventMatch;
     } catch(e) {}
   }
