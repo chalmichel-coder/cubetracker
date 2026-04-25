@@ -14,154 +14,244 @@
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;min-height:100vh}
 a{color:inherit;text-decoration:none}
-.app{max-width:720px;margin:0 auto;padding:16px 14px 40px}
-.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px}
+.app{max-width:740px;margin:0 auto;padding:16px 14px 60px}
+
+/* HEADER */
+.hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px;gap:12px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;line-height:1}
 .logo em{color:var(--accent);font-style:normal}
-.logo small{display:block;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:var(--text3);letter-spacing:0;margin-top:-4px}
-.date-badge{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 10px;margin-top:4px;white-space:nowrap}
-.tabs{display:flex;gap:4px;background:var(--bg2);border-radius:var(--r);padding:4px;border:1px solid var(--border);margin-bottom:18px}
-.tab{flex:1;padding:8px 4px;text-align:center;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);border:none;background:transparent;transition:all .2s}
+.logo small{display:block;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--text3);letter-spacing:0;margin-top:2px}
+.datebadge{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 10px;white-space:nowrap;flex-shrink:0}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--bg2);border-radius:var(--r);padding:4px;border:1px solid var(--border);margin-bottom:20px}
+.tab{flex:1;padding:9px 4px;text-align:center;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);border:none;background:transparent;transition:all .2s}
 .tab.on{background:var(--accent);color:#000;font-weight:600}
 .tab:hover:not(.on){background:var(--bg3);color:var(--text)}
 .panel{display:none}.panel.on{display:block}
-.live-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+
+/* SECTION HEADER */
+.sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.live-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--green)}
-.live-sub{font-size:11px;color:var(--text3);margin-left:auto}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;transition:border-color .15s}
-.card:hover{border-color:#3a3a4a}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;color:var(--green)}
+.sec-sub{font-size:11px;color:var(--text3);margin-left:auto}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
 .card-body{padding:14px 16px}
-.wr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;letter-spacing:.5px}
-.badge-WR{background:#f5c84222;color:var(--accent);border:1px solid #f5c84244}
-.wr-ev{font-size:12px;color:var(--text2)}
-.wr-row{display:flex;align-items:center;gap:14px}
-.wr-time{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--text);line-height:1}
-.wr-name{font-size:13px;font-weight:500;color:var(--blue);cursor:pointer}
-.wr-name:hover{text-decoration:underline}
-.wr-meta{font-size:11px;color:var(--text3);margin-top:2px}
-.p-hd{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
-.avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;flex-shrink:0;border:1.5px solid var(--border)}
-.av-me{background:#f5c84215;color:var(--accent);border-color:#f5c84244}
-.av-fr{background:var(--bg3);color:var(--text2)}
-.p-name{font-weight:600;font-size:15px}
-.p-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)}
-.p-country{font-size:12px;color:var(--text2);margin-top:1px}
-.p-stats{display:flex;gap:6px;margin-left:auto}
-.stat{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 8px;text-align:center}
-.sv{font-family:'Bebas Neue',sans-serif;font-size:18px;display:block;line-height:1}
-.sl{font-size:9px;color:var(--text3);letter-spacing:.4px}
-.chevron{color:var(--text3);font-size:14px;margin-left:6px;transition:transform .25s;flex-shrink:0}
-.card.open .chevron{transform:rotate(180deg)}
-.p-detail{display:none;padding:0 16px 14px;border-top:1px solid var(--border)}
-.card.open .p-detail{display:block}
-.pr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:6px;margin-top:12px}
-.pr-item{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px 10px}
-.pr-ev{font-size:10px;color:var(--text3);font-weight:500;margin-bottom:3px}
-.pr-single{font-family:'DM Mono',monospace;font-size:13px;color:var(--text)}
-.pr-avg{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)}
-.pr-rank{font-size:10px;color:var(--text3);margin-top:2px}
-.s-row{display:flex;gap:8px;margin-bottom:14px}
-.s-row input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
-.s-row input:focus{border-color:var(--accent)}
-.s-row input::placeholder{color:var(--text3)}
-.s-row button{background:var(--accent);color:#000;border:none;border-radius:var(--r);padding:10px 18px;font-weight:600;font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
-.s-row button:hover{opacity:.85}
-.chat-section{margin-top:28px;border-top:1px solid var(--border);padding-top:18px}
-.chat-label{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.chat-label span{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text3);font-weight:400;letter-spacing:0}
-.chat-messages{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);min-height:120px;max-height:340px;overflow-y:auto;padding:14px;margin-bottom:10px;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:88%;line-height:1.55}
-.msg-user{align-self:flex-end;background:var(--accent);color:#000;padding:8px 13px;border-radius:10px 10px 2px 10px;font-size:13px;font-weight:500}
-.msg-bot{align-self:flex-start;background:var(--bg3);border:1px solid var(--border);padding:10px 13px;border-radius:2px 10px 10px 10px;font-size:13px;color:var(--text);white-space:pre-wrap}
-.msg-bot.err{border-color:#ff525244;color:var(--red)}
-.chat-input-row{display:flex;gap:8px}
-.chat-input-row input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
-.chat-input-row input:focus{border-color:var(--accent)}
-.chat-input-row input::placeholder{color:var(--text3)}
-.chat-input-row button{background:var(--accent);color:#000;border:none;border-radius:var(--r);padding:10px 16px;font-weight:600;font-size:20px;cursor:pointer;line-height:1}
-.chat-input-row button:disabled{opacity:.4;cursor:default}
-.suggestions{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.card.clickable{cursor:pointer;transition:border-color .15s}
+.card.clickable:hover{border-color:#3a3a4a}
+
+/* CONTROLS */
+.ctrl-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.ctrl-row select,.ctrl-row input{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;min-width:0}
+.ctrl-row select:focus,.ctrl-row input:focus{border-color:var(--accent)}
+.ctrl-row select{flex:1;cursor:pointer}
+.ctrl-row input{flex:1}
+.btn{background:var(--accent);color:#000;border:none;border-radius:var(--r);padding:10px 18px;font-weight:600;font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn-sm{padding:6px 12px;font-size:12px}
+
+/* RECORDS GRID */
+.rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.rec-grid{grid-template-columns:1fr}}
+.rec-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;transition:border-color .15s;cursor:pointer}
+.rec-card:hover{border-color:#3a3a4a}
+.rec-type{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.badge-wr{background:#f5c84222;color:var(--accent);border:1px solid #f5c84244;font-size:9px;padding:1px 6px;border-radius:3px;font-weight:600}
+.rec-time{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--text);line-height:1;margin-bottom:4px}
+.rec-name{font-size:13px;font-weight:500;color:var(--blue)}
+.rec-meta{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* RANKINGS TABLE */
+.rank-table{width:100%;border-collapse:collapse}
+.rank-table th{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border);text-align:left}
+.rank-table td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px}
+.rank-table tr:last-child td{border-bottom:none}
+.rank-table tr:hover td{background:var(--bg3)}
+.rank-num{font-family:'DM Mono',monospace;font-weight:500;color:var(--text2);font-size:12px}
+.rank-num.top1{color:var(--accent)}
+.rank-num.top3{color:var(--orange)}
+.rank-num.top10{color:var(--blue)}
+.rank-time{font-family:'DM Mono',monospace;font-size:13px;font-weight:500}
+.rank-link{color:var(--blue);cursor:pointer}
+.rank-link:hover{text-decoration:underline}
+
+/* PROFILE */
+.p-hdr{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.avatar{width:48px;height:48px;border-radius:50%;background:var(--bg3);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--text2);flex-shrink:0}
+.p-name{font-size:18px;font-weight:600}
+.p-sub{font-size:12px;color:var(--text2);margin-top:2px;font-family:'DM Mono',monospace}
+.p-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.pstat{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center}
+.pstat-val{font-family:'Bebas Neue',sans-serif;font-size:22px;display:block;line-height:1;color:var(--text)}
+.pstat-lbl{font-size:9px;color:var(--text3);letter-spacing:.6px;text-transform:uppercase}
+.pr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.pr-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.pr-ev{font-size:10px;color:var(--text3);font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.pr-single{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--text)}
+.pr-avg{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);margin-top:1px}
+.pr-wr{font-size:10px;color:var(--text3);margin-top:3px}
+.pr-wr span{font-weight:500}
+
+/* COMP CARDS */
+.comp-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:8px}
+.comp-name{font-size:15px;font-weight:600;margin-bottom:4px}
+.comp-meta{font-size:12px;color:var(--text2);display:flex;gap:12px;flex-wrap:wrap}
+.comp-date{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)}
+
+/* CHAT */
+.chat-wrap{margin-top:28px;border-top:1px solid var(--border);padding-top:20px}
+.chat-title{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.chat-title small{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text3);font-weight:400;letter-spacing:0}
+.chat-msgs{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);min-height:100px;max-height:300px;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+.msg{max-width:90%;line-height:1.6;font-size:13px}
+.msg-u{align-self:flex-end;background:var(--accent);color:#000;padding:8px 13px;border-radius:10px 10px 2px 10px;font-weight:500}
+.msg-b{align-self:flex-start;background:var(--bg3);border:1px solid var(--border);padding:10px 13px;border-radius:2px 10px 10px 10px;color:var(--text);white-space:pre-wrap}
+.msg-b.err{color:var(--red);border-color:#ff525233}
+.chat-row{display:flex;gap:8px}
+.chat-row input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.chat-row input:focus{border-color:var(--accent)}
+.chat-row input::placeholder{color:var(--text3)}
+.chat-row button{background:var(--accent);color:#000;border:none;border-radius:var(--r);padding:10px 16px;font-size:18px;cursor:pointer;line-height:1}
+.chat-row button:disabled{opacity:.4;cursor:default}
+.sugs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .sug{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s}
 .sug:hover{border-color:var(--accent);color:var(--accent)}
+
+/* UTILS */
 .spin{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px}
 @keyframes sp{to{transform:rotate(360deg)}}
-.loading{color:var(--text2);font-size:13px;padding:10px 0;display:flex;align-items:center}
+.ld{color:var(--text2);font-size:13px;padding:12px 0;display:flex;align-items:center}
 .empty{color:var(--text3);font-size:13px;padding:10px 0;font-style:italic}
-.err-msg{color:var(--red);font-size:13px;padding:6px 0}
+.err{color:var(--red);font-size:13px;padding:6px 0}
 .wca-link{color:var(--accent);font-family:'DM Mono',monospace;font-size:11px}
 .wca-link:hover{text-decoration:underline}
-.sec-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin:16px 0 8px}
-.source{font-size:11px;color:var(--text3);margin-top:14px}
-.calixte-banner{background:#f5c84210;border:1px solid #f5c84230;border-radius:var(--r);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px}
-.calixte-banner .cb-name{font-weight:600;color:var(--accent);font-size:14px}
-.calixte-banner .cb-sub{font-size:12px;color:var(--text2)}
+.lbl{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin:16px 0 8px}
+.src{font-size:11px;color:var(--text3);margin-top:16px;padding-top:12px;border-top:1px solid var(--border)}
 </style>
 </head>
 <body>
 <div class="app">
 
-<div class="header">
+<div class="hdr">
   <div>
-    <div class="logo">CUBE<em>TRACKER</em><small>Dashboard WCA pour Calixte · données officielles en direct</small></div>
+    <div class="logo">CUBE<em>TRACKER</em><small>Données officielles WCA · en direct</small></div>
   </div>
-  <div class="date-badge" id="dateBadge"></div>
+  <div class="datebadge" id="datebadge"></div>
 </div>
 
 <div class="tabs">
-  <button class="tab on" onclick="tab('records',this)">🏆 Records</button>
-  <button class="tab" onclick="tab('suivis',this)">👥 Suivis</button>
-  <button class="tab" onclick="tab('search',this)">🔍 Rechercher</button>
+  <button class="tab on" onclick="goTab('records',this)">🏆 Records</button>
+  <button class="tab" onclick="goTab('rankings',this)">📊 Classements</button>
+  <button class="tab" onclick="goTab('profile',this)">👤 Profil</button>
 </div>
 
-<!-- RECORDS -->
+<!-- ===== RECORDS ===== -->
 <div class="panel on" id="p-records">
-  <div class="live-hd">
+  <div class="ctrl-row">
+    <select id="recEvent" onchange="loadRecords()">
+      <option value="">Toutes les épreuves</option>
+      <option value="333">3x3x3</option>
+      <option value="222">2x2x2</option>
+      <option value="444">4x4x4</option>
+      <option value="555">5x5x5</option>
+      <option value="666">6x6x6</option>
+      <option value="777">7x7x7</option>
+      <option value="333oh">3x3 One-Handed</option>
+      <option value="333bf">3x3 Blindfolded</option>
+      <option value="333fm">Fewest Moves</option>
+      <option value="333mbf">Multi-Blind</option>
+      <option value="pyram">Pyraminx</option>
+      <option value="skewb">Skewb</option>
+      <option value="sq1">Square-1</option>
+      <option value="minx">Megaminx</option>
+      <option value="clock">Clock</option>
+      <option value="444bf">4x4 Blind</option>
+      <option value="555bf">5x5 Blind</option>
+    </select>
+  </div>
+  <div class="sec-hd">
     <div class="dot"></div>
-    <div class="live-title">Records mondiaux actifs</div>
-    <div class="live-sub" id="recUpdated"></div>
+    <div class="sec-title">Records mondiaux</div>
+    <div class="sec-sub" id="rec-updated"></div>
   </div>
-  <div id="recContent"><div class="loading"><span class="spin"></span>Chargement depuis WCA…</div></div>
-  <div class="source">Source : <a class="wca-link" href="https://www.worldcubeassociation.org/results/records" target="_blank">worldcubeassociation.org/results/records</a></div>
-  <div class="chat-section" id="chatRecords"></div>
+  <div id="rec-content"><div class="ld"><span class="spin"></span>Chargement depuis WCA…</div></div>
+  <div class="src">Source officielle : <a class="wca-link" href="https://www.worldcubeassociation.org/results/records" target="_blank">worldcubeassociation.org/results/records</a></div>
+  <div class="chat-wrap" id="chat-records"></div>
 </div>
 
-<!-- SUIVIS -->
-<div class="panel" id="p-suivis">
-  <div class="calixte-banner">
-    <div>⭐</div>
-    <div><div class="cb-name">Calixte OU · 2026OUCA01</div><div class="cb-sub">Ton profil — clique pour voir tes PR</div></div>
+<!-- ===== RANKINGS ===== -->
+<div class="panel" id="p-rankings">
+  <div class="ctrl-row">
+    <select id="rankEvent">
+      <option value="333">3x3x3</option>
+      <option value="222">2x2x2</option>
+      <option value="444">4x4x4</option>
+      <option value="555">5x5x5</option>
+      <option value="pyram">Pyraminx</option>
+      <option value="skewb">Skewb</option>
+      <option value="333oh">3x3 OH</option>
+      <option value="333bf">3x3 BLD</option>
+      <option value="minx">Megaminx</option>
+      <option value="sq1">Square-1</option>
+      <option value="clock">Clock</option>
+      <option value="333fm">FMC</option>
+      <option value="666">6x6x6</option>
+      <option value="777">7x7x7</option>
+    </select>
+    <select id="rankType">
+      <option value="single">Single</option>
+      <option value="average">Average</option>
+    </select>
+    <select id="rankRegion">
+      <option value="world">Monde</option>
+      <option value="France">France</option>
+      <option value="Europe">Europe</option>
+      <option value="Asia">Asie</option>
+      <option value="North America">Amérique du Nord</option>
+    </select>
+    <button class="btn" onclick="loadRankings()">Voir</button>
   </div>
-  <div id="suiviContent"><div class="loading"><span class="spin"></span>Chargement des profils…</div></div>
-  <div class="source">Source : <a class="wca-link" href="https://www.worldcubeassociation.org" target="_blank">worldcubeassociation.org</a></div>
-  <div class="chat-section" id="chatSuivis"></div>
+  <div id="rank-content"><div class="empty">Sélectionne une épreuve et clique sur Voir.</div></div>
+  <div class="src">Source : <a class="wca-link" href="https://www.worldcubeassociation.org/results/rankings" target="_blank">worldcubeassociation.org/results/rankings</a></div>
+  <div class="chat-wrap" id="chat-rankings"></div>
 </div>
 
-<!-- SEARCH -->
-<div class="panel" id="p-search">
-  <div class="s-row">
-    <input id="searchInput" placeholder="Nom ou WCA ID (ex: 2019WANY36)" />
-    <button onclick="doSearch()">Chercher</button>
+<!-- ===== PROFILE ===== -->
+<div class="panel" id="p-profile">
+  <div class="ctrl-row">
+    <input id="profileInput" placeholder="Nom ou WCA ID (ex: 2026OUCA01)" onkeydown="if(event.key==='Enter')loadProfile()" />
+    <button class="btn" onclick="loadProfile()">Chercher</button>
   </div>
-  <div id="searchContent"></div>
-  <div class="chat-section" id="chatSearch"></div>
+  <!-- Suivis rapides -->
+  <div class="lbl">Accès rapide</div>
+  <div class="sugs" id="quickAccess"></div>
+  <div id="profile-content"><div class="empty">Tape un nom ou un WCA ID.</div></div>
+  <div class="src">Source : <a class="wca-link" href="https://www.worldcubeassociation.org/persons" target="_blank">worldcubeassociation.org/persons</a></div>
+  <div class="chat-wrap" id="chat-profile"></div>
 </div>
 
-</div>
+</div><!-- /app -->
 
 <script>
 const WCA = 'https://www.worldcubeassociation.org/api/v0';
-const CALIXTE = '2026OUCA01';
-const FRIENDS = ['2021ZAJD03','2023GENG02','2019WANY36','2016PILA03'];
 
 const EVT = {
   '333':'3x3x3','222':'2x2x2','444':'4x4x4','555':'5x5x5','666':'6x6x6','777':'7x7x7',
-  '333bf':'3x3 Blind','333oh':'3x3 OH','333fm':'FMC','333mbf':'Multi-BLD',
+  '333bf':'3x3 BLD','333oh':'3x3 OH','333fm':'FMC','333mbf':'Multi-BLD',
   'pyram':'Pyraminx','skewb':'Skewb','sq1':'Square-1','minx':'Megaminx',
-  'clock':'Clock','444bf':'4x4 Blind','555bf':'5x5 Blind'
+  'clock':'Clock','444bf':'4x4 BLD','555bf':'5x5 BLD'
 };
+
+const FOLLOWED = [
+  {id:'2026OUCA01', name:'Calixte OU'},
+  {id:'2021ZAJD03', name:'Teodor Zajder'},
+  {id:'2023GENG02', name:'Xuanyi Geng'},
+  {id:'2019WANY36', name:'WAN Y.'},
+  {id:'2016PILA03', name:'PILA'}
+];
 
 function fmt(cs, ev) {
   const n = parseInt(cs, 10);
@@ -170,27 +260,26 @@ function fmt(cs, ev) {
   if (n === -2) return 'DNS';
   if (ev === '333fm') return n + ' mv';
   if (ev === '333mbf') {
-    const missed = n % 100;
-    const t = Math.floor(n / 100) % 100000;
-    const diff = 99 - Math.floor(n / 10000000);
-    const solved = diff + missed;
-    return solved + '/' + (solved+missed) + ' ' + Math.floor(t/60) + ':' + (t%60).toString().padStart(2,'0');
+    const missed = n % 100, t = Math.floor(n/100)%100000, diff = 99-Math.floor(n/10000000), solved = diff+missed;
+    return solved+'/'+(solved+missed)+' '+Math.floor(t/60)+':'+(t%60).toString().padStart(2,'0');
   }
-  const tot = n * 10;
-  const c = Math.floor((tot % 1000) / 10);
-  const s = Math.floor(tot / 1000) % 60;
-  const m = Math.floor(tot / 60000);
-  if (m > 0) return m + ':' + s.toString().padStart(2,'0') + '.' + c.toString().padStart(2,'0');
-  return s + '.' + c.toString().padStart(2,'0');
+  const tot = n*10, c = Math.floor((tot%1000)/10), s = Math.floor(tot/1000)%60, m = Math.floor(tot/60000);
+  if (m>0) return m+':'+s.toString().padStart(2,'0')+'.'+c.toString().padStart(2,'0');
+  return s+'.'+c.toString().padStart(2,'0');
 }
 
-function rc(r){if(!r)return'var(--text3)';if(r===1)return'var(--accent)';if(r<=10)return'var(--orange)';if(r<=100)return'var(--blue)';if(r<=1000)return'var(--green)';return'var(--text2)';}
+function rc(r){if(!r||r>10000)return'var(--text2)';if(r===1)return'var(--accent)';if(r<=3)return'var(--orange)';if(r<=10)return'var(--blue)';if(r<=100)return'var(--green)';return'var(--text2)';}
 function ini(n){return n?n.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase():'?';}
-async function wca(path){const r=await fetch(WCA+path);if(!r.ok)throw new Error('WCA '+r.status);return r.json();}
 
-document.getElementById('dateBadge').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+async function wca(path) {
+  const r = await fetch(WCA + path);
+  if (!r.ok) throw new Error('WCA ' + r.status);
+  return r.json();
+}
 
-function tab(id, btn) {
+document.getElementById('datebadge').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+
+function goTab(id, btn) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.getElementById('p-'+id).classList.add('on');
@@ -199,213 +288,242 @@ function tab(id, btn) {
 
 // ===== RECORDS =====
 async function loadRecords() {
-  const el = document.getElementById('recContent');
+  const el = document.getElementById('rec-content');
+  const upd = document.getElementById('rec-updated');
+  const evId = document.getElementById('recEvent').value;
+  el.innerHTML = '<div class="ld"><span class="spin"></span>Chargement…</div>';
   try {
-    const d = await wca('/records');
-    // L'API retourne { world_records: { '333': { single: {...}, average: {...} }, ... } }
+    const d = await wca('/records' + (evId ? '?event_id='+evId : ''));
     const wr = d.world_records || d;
-    const evs = Object.keys(wr);
-    if (!evs.length) { el.innerHTML = '<div class="empty">Aucun record trouvé.</div>'; return; }
+    const entries = Object.entries(wr).filter(([k,v])=>v&&typeof v==='object');
+    if (!entries.length) { el.innerHTML = '<div class="empty">Aucun record trouvé.</div>'; return; }
 
-    let h = ''; let c = 0;
-    for (const ev of evs) {
-      if (c >= 10) break;
-      const e = wr[ev];
-      if (!e || typeof e !== 'object') continue;
-
-      if (e.single) {
-        const s = e.single;
-        const best = parseInt(s.best, 10);
+    let h = '<div class="rec-grid">';
+    let count = 0;
+    for (const [ev, evd] of entries) {
+      if (count >= 12) break;
+      const evName = EVT[ev] || ev;
+      if (evd.single) {
+        const s = evd.single;
+        const best = parseInt(s.best,10);
         const name = s.name || s.person_name || '?';
         const country = s.country_iso2 || s.country || '';
-        const comp = (s.competition_id || '').replace(/_/g,' ');
+        const comp = (s.competition_id||'').replace(/_/g,' ');
         const date = s.date || '';
         const wcaId = s.wca_id || '';
-        if (best > 0) { h += buildWrCard(ev, 'Single', best, name, country, comp, date, wcaId); c++; }
+        if (best > 0) {
+          h += '<div class="rec-card" onclick="window.open(\'https://www.worldcubeassociation.org/persons/'+wcaId+'\',\'_blank\')">' +
+            '<div class="rec-type"><span class="badge-wr">WR</span>' + evName + ' · Single</div>' +
+            '<div class="rec-time">' + fmt(best,ev) + '</div>' +
+            '<div class="rec-name">' + name + '</div>' +
+            '<div class="rec-meta">' + country + ' · ' + comp + ' · ' + date + '</div>' +
+          '</div>';
+          count++;
+        }
       }
-      if (e.average && c < 10) {
-        const a = e.average;
-        const best = parseInt(a.best, 10);
+      if (evd.average && count < 12) {
+        const a = evd.average;
+        const best = parseInt(a.best,10);
         const name = a.name || a.person_name || '?';
         const country = a.country_iso2 || a.country || '';
-        const comp = (a.competition_id || '').replace(/_/g,' ');
+        const comp = (a.competition_id||'').replace(/_/g,' ');
         const date = a.date || '';
         const wcaId = a.wca_id || '';
-        if (best > 0) { h += buildWrCard(ev, 'Average', best, name, country, comp, date, wcaId); c++; }
+        if (best > 0) {
+          h += '<div class="rec-card" onclick="window.open(\'https://www.worldcubeassociation.org/persons/'+wcaId+'\',\'_blank\')">' +
+            '<div class="rec-type"><span class="badge-wr">WR</span>' + evName + ' · Average</div>' +
+            '<div class="rec-time">' + fmt(best,ev) + '</div>' +
+            '<div class="rec-name">' + name + '</div>' +
+            '<div class="rec-meta">' + country + ' · ' + comp + ' · ' + date + '</div>' +
+          '</div>';
+          count++;
+        }
       }
     }
-
-    if (!h) { el.innerHTML = '<div class="empty">Les données WCA sont chargées mais aucun temps valide trouvé.</div>'; return; }
-    h += '<div style="text-align:center;margin-top:8px"><a class="wca-link" href="https://www.worldcubeassociation.org/results/records?show=mixed" target="_blank">→ Tous les records sur WCA</a></div>';
+    h += '</div>';
+    if (!count) { el.innerHTML = '<div class="empty">Aucun temps valide reçu de l\'API WCA.</div>'; return; }
+    h += '<div style="text-align:center;margin-top:12px"><a class="wca-link" href="https://www.worldcubeassociation.org/results/records?show=mixed" target="_blank">→ Tous les records sur WCA</a></div>';
     el.innerHTML = h;
-    document.getElementById('recUpdated').textContent = 'WCA API v0 · ' + new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    upd.textContent = 'mis à jour ' + new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
   } catch(e) {
-    el.innerHTML = '<div class="err-msg">Erreur : ' + e.message + ' — <a class="wca-link" href="https://www.worldcubeassociation.org/results/records" target="_blank">Voir sur WCA</a></div>';
+    el.innerHTML = '<div class="err">Erreur : '+e.message+' — <a class="wca-link" href="https://www.worldcubeassociation.org/results/records" target="_blank">Voir sur WCA</a></div>';
   }
 }
 
-function buildWrCard(ev, mode, best, name, country, comp, date, wcaId) {
-  const url = 'https://www.worldcubeassociation.org/persons/' + wcaId;
-  const evName = EVT[ev] || ev;
-  const time = fmt(best, ev);
-  return '<div class="card"><div class="card-body">' +
-    '<div class="wr-top"><span class="badge badge-WR">WR</span><span class="wr-ev">' + evName + ' — ' + mode + '</span></div>' +
-    '<div class="wr-row">' +
-      '<div class="wr-time">' + time + '</div>' +
-      '<div>' +
-        '<div class="wr-name" onclick="window.open(\'' + url + '\',\'_blank\')">' + name + '</div>' +
-        '<div class="wr-meta">' + country + ' · ' + comp + ' · ' + date + '</div>' +
-      '</div>' +
-    '</div>' +
-  '</div></div>';
-}
-
-// ===== PERSONS =====
-async function loadSuivis() {
-  const el = document.getElementById('suiviContent');
-  el.innerHTML = '<div class="loading"><span class="spin"></span>Chargement de Calixte…</div>';
-  const calixte = await safePerson(CALIXTE);
-  let h = '<div class="sec-label">Mon profil</div>' + personCard(calixte, CALIXTE, true);
-  h += '<div class="sec-label" style="margin-top:18px">Speedcubers suivis</div>';
-  el.innerHTML = h + '<div id="friendsLoading" class="loading"><span class="spin"></span>Chargement des amis…</div>';
-  const fh = [];
-  for (const id of FRIENDS) { const p = await safePerson(id); fh.push(personCard(p, id, false)); }
-  document.getElementById('friendsLoading').outerHTML = fh.join('');
-}
-
-async function safePerson(id) { try { const d = await wca('/persons/'+id); return d.person||d; } catch(e) { return null; } }
-
-function personCard(p, id, isMe) {
-  if (!p) return '<div class="card"><div class="p-hd"><div class="avatar av-fr">?</div><div><div class="p-name">' + id + '</div><div class="p-id">Profil non trouvé</div></div></div></div>';
-  const prs = p.personal_records || {};
-  const evs = Object.keys(prs);
-  const cc = p.competition_count || p.competitions_count || '—';
-  const av = isMe ? 'av-me' : 'av-fr';
-
-  let prH = '';
-  if (evs.length) {
-    prH = '<div class="sec-label" style="margin-top:0">Personal Records</div><div class="pr-grid">';
-    evs.slice(0,16).forEach(ev => {
-      const s = prs[ev] && prs[ev].single;
-      const a = prs[ev] && prs[ev].average;
-      if (!s) return;
-      prH += '<div class="pr-item">' +
-        '<div class="pr-ev">' + (EVT[ev]||ev) + '</div>' +
-        '<div class="pr-single">' + fmt(s.best,ev) + '</div>' +
-        (a ? '<div class="pr-avg">avg ' + fmt(a.best,ev) + '</div>' : '') +
-        '<div class="pr-rank">WR: <span style="color:' + rc(s.world_rank) + '">#' + (s.world_rank||'—') + '</span> NR: <span style="color:' + rc(s.national_rank) + '">#' + (s.national_rank||'—') + '</span></div>' +
-      '</div>';
+// ===== RANKINGS =====
+async function loadRankings() {
+  const el = document.getElementById('rank-content');
+  const ev = document.getElementById('rankEvent').value;
+  const type = document.getElementById('rankType').value;
+  const region = document.getElementById('rankRegion').value;
+  el.innerHTML = '<div class="ld"><span class="spin"></span>Chargement…</div>';
+  try {
+    const url = '/rankings/'+ev+'/'+type+'?region='+encodeURIComponent(region)+'&per_page=20';
+    const d = await wca(url);
+    const results = d.results || d;
+    if (!Array.isArray(results) || !results.length) {
+      el.innerHTML = '<div class="empty">Aucun résultat trouvé.</div>'; return;
+    }
+    const evName = EVT[ev] || ev;
+    const regionLabel = document.getElementById('rankRegion').options[document.getElementById('rankRegion').selectedIndex].text;
+    let h = '<div class="card"><div class="card-body">' +
+      '<div class="lbl" style="margin-top:0">Top ' + regionLabel + ' — ' + evName + ' ' + type + '</div>' +
+      '<table class="rank-table"><thead><tr><th>#</th><th>Nom</th><th>Pays</th><th>Temps</th></tr></thead><tbody>';
+    results.slice(0,20).forEach((r,i) => {
+      const rank = i+1;
+      const rankClass = rank===1?'top1':rank<=3?'top3':rank<=10?'top10':'';
+      const name = r.name || r.person_name || '?';
+      const country = r.country_iso2 || r.country || '';
+      const best = parseInt(r.best,10);
+      const wcaId = r.wca_id || '';
+      h += '<tr>' +
+        '<td><span class="rank-num '+rankClass+'">#'+rank+'</span></td>' +
+        '<td><span class="rank-link" onclick="quickProfile(\''+wcaId+'\')">' + name + '</span></td>' +
+        '<td style="color:var(--text2)">' + country + '</td>' +
+        '<td><span class="rank-time">' + fmt(best,ev) + '</span></td>' +
+      '</tr>';
     });
-    prH += '</div>';
-    if (evs.length > 16) prH += '<div class="empty">+' + (evs.length-16) + ' épreuves sur <a class="wca-link" href="https://www.worldcubeassociation.org/persons/'+id+'" target="_blank">WCA</a></div>';
+    h += '</tbody></table></div></div>';
+    h += '<div style="text-align:center;margin-top:8px"><a class="wca-link" href="https://www.worldcubeassociation.org/results/rankings/'+ev+'/'+type+'" target="_blank">→ Classement complet sur WCA</a></div>';
+    el.innerHTML = h;
+  } catch(e) {
+    el.innerHTML = '<div class="err">Erreur : '+e.message+'</div>';
   }
-
-  return '<div class="card" id="c-' + id + '">' +
-    '<div class="p-hd" onclick="toggleCard(\'' + id + '\')">' +
-      '<div class="avatar ' + av + '">' + ini(p.name) + '</div>' +
-      '<div style="flex:1;min-width:0">' +
-        '<div class="p-name">' + (p.name||id) + '</div>' +
-        '<div class="p-id">' + id + '</div>' +
-        '<div class="p-country">' + (p.country||'') + '</div>' +
-      '</div>' +
-      '<div class="p-stats">' +
-        '<div class="stat"><span class="sv">' + cc + '</span><span class="sl">COMPS</span></div>' +
-        '<div class="stat"><span class="sv">' + evs.length + '</span><span class="sl">EVENTS</span></div>' +
-      '</div>' +
-      '<div class="chevron">▾</div>' +
-    '</div>' +
-    '<div class="p-detail">' + prH +
-      '<div style="margin-top:10px"><a class="wca-link" href="https://www.worldcubeassociation.org/persons/' + id + '" target="_blank">→ Profil complet WCA</a></div>' +
-    '</div>' +
-  '</div>';
 }
 
-function toggleCard(id) { const c = document.getElementById('c-'+id); if(c) c.classList.toggle('open'); }
+function quickProfile(wcaId) {
+  goTab('profile', document.querySelectorAll('.tab')[2]);
+  document.getElementById('profileInput').value = wcaId;
+  loadProfile();
+}
 
-// ===== SEARCH =====
-document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
+// ===== PROFILE =====
+function buildQuickAccess() {
+  const el = document.getElementById('quickAccess');
+  el.innerHTML = FOLLOWED.map(f =>
+    '<div class="sug" onclick="quickProfile(\''+f.id+'\')">'+f.name+'</div>'
+  ).join('');
+}
 
-async function doSearch() {
-  const q = document.getElementById('searchInput').value.trim();
-  const el = document.getElementById('searchContent');
+async function loadProfile() {
+  const q = document.getElementById('profileInput').value.trim();
+  const el = document.getElementById('profile-content');
   if (!q) return;
-  el.innerHTML = '<div class="loading"><span class="spin"></span>Recherche…</div>';
+  el.innerHTML = '<div class="ld"><span class="spin"></span>Recherche…</div>';
   try {
     const isId = /^\d{4}[A-Z]{4}\d{2}$/i.test(q);
     if (isId) {
-      const p = await safePerson(q.toUpperCase());
-      el.innerHTML = p ? personCard(p, q.toUpperCase(), false) : '<div class="empty">Aucun compétiteur trouvé.</div>';
-      if (p) { const c = document.getElementById('c-'+q.toUpperCase()); if(c) c.classList.add('open'); }
+      const d = await wca('/persons/'+q.toUpperCase());
+      const p = d.person || d;
+      el.innerHTML = renderProfile(p, q.toUpperCase());
     } else {
-      const d = await wca('/persons?q=' + encodeURIComponent(q) + '&per_page=8');
-      const ps = d.persons || [];
-      if (!ps.length) { el.innerHTML = '<div class="empty">Aucun résultat.</div>'; return; }
-      el.innerHTML = ps.map(p =>
-        '<div class="card" style="cursor:pointer" onclick="loadAndShow(\'' + p.wca_id + '\')">' +
-        '<div class="card-body">' +
-        '<div style="font-weight:600;font-size:15px">' + p.name + '</div>' +
-        '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--text3);margin-top:3px">' + p.wca_id + ' · ' + (p.country_iso2||'') + ' · ' + (p.competition_count||0) + ' compétitions</div>' +
-        '</div></div>'
-      ).join('');
+      const d = await wca('/persons?q='+encodeURIComponent(q)+'&per_page=8');
+      const persons = d.persons || [];
+      if (!persons.length) { el.innerHTML = '<div class="empty">Aucun résultat pour "'+q+'".</div>'; return; }
+      if (persons.length === 1) {
+        const full = await wca('/persons/'+persons[0].wca_id);
+        const p = full.person || full;
+        el.innerHTML = renderProfile(p, persons[0].wca_id);
+      } else {
+        el.innerHTML = '<div class="lbl">Résultats pour "'+q+'"</div>' +
+          persons.map(p =>
+            '<div class="card clickable" onclick="quickProfile(\''+p.wca_id+'\')"><div class="card-body" style="display:flex;align-items:center;gap:12px">' +
+            '<div class="avatar">'+ini(p.name)+'</div>' +
+            '<div><div style="font-weight:600;font-size:15px">'+p.name+'</div>' +
+            '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--text3);margin-top:2px">'+p.wca_id+' · '+(p.country_iso2||'')+' · '+(p.competition_count||0)+' compétitions</div></div>' +
+            '</div></div>'
+          ).join('');
+      }
     }
-  } catch(e) { el.innerHTML = '<div class="err-msg">Erreur : ' + e.message + '</div>'; }
+  } catch(e) {
+    el.innerHTML = '<div class="err">Erreur : '+e.message+'</div>';
+  }
 }
 
-async function loadAndShow(id) {
-  const el = document.getElementById('searchContent');
-  el.innerHTML = '<div class="loading"><span class="spin"></span>Chargement…</div>';
-  const p = await safePerson(id);
-  el.innerHTML = p ? personCard(p, id, false) : '<div class="empty">Profil non trouvé.</div>';
-  const c = document.getElementById('c-'+id);
-  if (c) c.classList.add('open');
+function renderProfile(p, wcaId) {
+  if (!p || !p.name) return '<div class="err">Profil introuvable.</div>';
+  const prs = p.personal_records || {};
+  const evs = Object.keys(prs);
+  const cc = p.competition_count || p.competitions_count || '—';
+  const bestWR = evs.reduce((b,ev)=>{const wr=prs[ev]?.single?.world_rank;return wr&&wr<b?wr:b;},999999);
+
+  let html = '<div class="card"><div class="card-body">';
+  // Header
+  html += '<div class="p-hdr">' +
+    '<div class="avatar" style="border-color:var(--accent);color:var(--accent);background:#f5c84215">'+ini(p.name)+'</div>' +
+    '<div><div class="p-name">'+p.name+'</div>' +
+    '<div class="p-sub">'+wcaId+' · '+(p.country||'')+'</div></div>' +
+    '</div>';
+  // Stats
+  html += '<div class="p-stats">' +
+    '<div class="pstat"><span class="pstat-val">'+cc+'</span><span class="pstat-lbl">Compétitions</span></div>' +
+    '<div class="pstat"><span class="pstat-val">'+evs.length+'</span><span class="pstat-lbl">Épreuves</span></div>' +
+    (bestWR < 999999 ? '<div class="pstat"><span class="pstat-val" style="color:var(--accent)">#'+bestWR+'</span><span class="pstat-lbl">Meilleur WR</span></div>' : '') +
+    '</div>';
+  // PR Grid
+  if (evs.length) {
+    html += '<div class="lbl">Personal Records</div><div class="pr-grid">';
+    evs.forEach(ev => {
+      const s = prs[ev]?.single;
+      const a = prs[ev]?.average;
+      if (!s) return;
+      html += '<div class="pr-item">' +
+        '<div class="pr-ev">'+(EVT[ev]||ev)+'</div>' +
+        '<div class="pr-single">'+fmt(s.best,ev)+'</div>' +
+        (a?'<div class="pr-avg">avg '+fmt(a.best,ev)+'</div>':'') +
+        '<div class="pr-wr">WR <span style="color:'+rc(s.world_rank)+'">#'+(s.world_rank||'—')+'</span> · NR <span style="color:'+rc(s.national_rank)+'">#'+(s.national_rank||'—')+'</span></div>' +
+      '</div>';
+    });
+    html += '</div>';
+  }
+  html += '<div style="margin-top:14px"><a class="wca-link" href="https://www.worldcubeassociation.org/persons/'+wcaId+'" target="_blank">→ Profil complet sur WCA</a></div>';
+  html += '</div></div>';
+  return html;
 }
 
 // ===== CHATBOT =====
-const SUGS = {
-  records: ['WR 3x3 actuel ?','Record du 2x2 ?','Meilleur temps Pyraminx ?'],
-  suivis:  ['PR de Calixte ?','Résultats de mes amis ?','Classement de 2021ZAJD03 ?'],
-  search:  ['Compétitions France à venir ?','Top France 3x3 ?','Cherche Xuanyi Geng']
+const CHAT_SUGS = {
+  records:  ['WR 3x3 actuel ?','Meilleur temps Pyraminx ?','Record 2x2 ?'],
+  rankings: ['Top 10 France 3x3 ?','Classement monde skewb ?','Meilleur français en 4x4 ?'],
+  profile:  ['Profil de Calixte ?','Résultats de 2021ZAJD03 ?','Cherche Xuanyi Geng']
 };
 
 function buildChat(cid, key) {
-  const sugs = SUGS[key] || [];
+  const sugs = CHAT_SUGS[key] || [];
   document.getElementById(cid).innerHTML =
-    '<div class="chat-label">🤖 Demande à CubeTracker <span>Propulsé par Claude + API WCA officielle</span></div>' +
-    '<div class="suggestions">' + sugs.map(s => '<div class="sug" onclick="sendSug(this,\'' + cid + '-msgs\',\'' + cid + '-inp\')">' + s + '</div>').join('') + '</div>' +
-    '<div class="chat-messages" id="' + cid + '-msgs"><div class="msg msg-bot">Salut Calixte ! 👋 Pose-moi n\'importe quelle question sur le speedcubing — records, classements, profils… Je vais chercher les vraies données sur WCA pour toi.</div></div>' +
-    '<div class="chat-input-row">' +
-      '<input id="' + cid + '-inp" placeholder="Tape ta question…" onkeydown="if(event.key===\'Enter\')sendChat(\'' + cid + '-msgs\',\'' + cid + '-inp\')" />' +
-      '<button onclick="sendChat(\'' + cid + '-msgs\',\'' + cid + '-inp\')" id="' + cid + '-btn">↑</button>' +
+    '<div class="chat-title">🤖 Demande à CubeTracker <small>Claude + API WCA officielle</small></div>' +
+    '<div class="sugs">' + sugs.map(s=>'<div class="sug" onclick="sendSug(this,\''+cid+'\')">' + s + '</div>').join('') + '</div>' +
+    '<div class="chat-msgs" id="'+cid+'-msgs"><div class="msg msg-b">Salut ! 👋 Pose-moi n\'importe quelle question sur le speedcubing — records, classements, profils… Je cherche les vraies données WCA pour toi.</div></div>' +
+    '<div class="chat-row">' +
+      '<input id="'+cid+'-inp" placeholder="Tape ta question…" onkeydown="if(event.key===\'Enter\')sendChat(\''+cid+'\')" />' +
+      '<button onclick="sendChat(\''+cid+'\')" id="'+cid+'-btn">↑</button>' +
     '</div>' +
     '<div style="font-size:10px;color:var(--text3);margin-top:8px">This information is based on competition results owned and maintained by the World Cube Association, published at worldcubeassociation.org/results</div>';
 }
 
-function sendSug(el, msgsId, inpId) {
-  document.getElementById(inpId).value = el.textContent;
-  sendChat(msgsId, inpId);
+function sendSug(el, cid) {
+  document.getElementById(cid+'-inp').value = el.textContent;
+  sendChat(cid);
 }
 
-async function sendChat(msgsId, inpId) {
-  const inp = document.getElementById(inpId);
-  const btnId = inpId.replace('-inp','-btn');
-  const btn = document.getElementById(btnId);
-  const msgs = document.getElementById(msgsId);
+async function sendChat(cid) {
+  const inp = document.getElementById(cid+'-inp');
+  const btn = document.getElementById(cid+'-btn');
+  const msgs = document.getElementById(cid+'-msgs');
   const q = inp.value.trim();
   if (!q) return;
   inp.value = '';
   if (btn) btn.disabled = true;
-
-  msgs.innerHTML += '<div class="msg msg-user">' + q + '</div>';
+  msgs.innerHTML += '<div class="msg msg-u">' + q + '</div>';
   const thinking = document.createElement('div');
-  thinking.className = 'msg msg-bot';
+  thinking.className = 'msg msg-b';
   thinking.innerHTML = '<span class="spin"></span>Recherche sur WCA…';
   msgs.appendChild(thinking);
   msgs.scrollTop = msgs.scrollHeight;
-
   try {
     const r = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify({question: q})
     });
     const d = await r.json();
@@ -420,11 +538,11 @@ async function sendChat(msgsId, inpId) {
 }
 
 // INIT
-buildChat('chatRecords','records');
-buildChat('chatSuivis','suivis');
-buildChat('chatSearch','search');
+buildChat('chat-records','records');
+buildChat('chat-rankings','rankings');
+buildChat('chat-profile','profile');
+buildQuickAccess();
 loadRecords();
-loadSuivis();
 </script>
 </body>
 </html>
