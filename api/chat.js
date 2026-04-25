@@ -8,9 +8,10 @@ const EVENT_NAMES = {
 };
 
 function formatTime(cs, eventId) {
+  cs = parseInt(cs, 10);
+  if (isNaN(cs) || cs === 0) return '—';
   if (cs === -1) return 'DNF';
   if (cs === -2) return 'DNS';
-  if (cs === 0) return '—';
   if (eventId === '333fm') return `${cs} moves`;
   if (eventId === '333mbf') {
     const missed = cs % 100;
