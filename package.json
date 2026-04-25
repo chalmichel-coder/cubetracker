@@ -1,0 +1,11 @@
+{
+  "name": "cubetracker",
+  "version": "1.0.0",
+  "description": "CubeTracker — WCA Speedcubing Dashboard for Calixte",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
