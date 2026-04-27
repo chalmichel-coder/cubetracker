@@ -1052,7 +1052,109 @@ a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{
 </div>
 
 <script>
-const API = (location.protocol === 'file:' ? 'http://localhost:8000' : '') + '/api';
+// =====================================================================
+// CubeTracker Static Adapter — Vercel / OVH
+// Intercepte les appels /api/... et les remplace par des fichiers JSON
+// générés par build_static.py dans /data/.
+// =====================================================================
+window.CUBETRACKER_STATIC = true;
+(function(){
+  const originalFetch = window.fetch.bind(window);
+  const jsonResponse = (obj, status = 200) => new Response(JSON.stringify(obj), {
+    status,
+    headers: { 'Content-Type': 'application/json; charset=utf-8' }
+  });
+  const slug = (value) => String(value || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Za-z0-9_-]+/g, '_').replace(/^_+|_+$/g, '').toLowerCase() || 'world';
+  async function getJson(path){
+    const res = await originalFetch(path, { cache: 'no-store' });
+    if(!res.ok) throw new Error('Fichier statique manquant : ' + path);
+    return res.json();
+  }
+  function profileSummary(p){
+    return { wca_id:p.wca_id||'', name:p.name||'', country:p.country||'', iso:p.iso||'' };
+  }
+  async function buildVersus(id1, id2){
+    const p1 = await getJson(`/data/profiles/${slug(id1)}.json`);
+    const p2 = await getJson(`/data/profiles/${slug(id2)}.json`);
+    const r1 = p1.personal_records || {};
+    const r2 = p2.personal_records || {};
+    const events = Array.from(new Set([...Object.keys(r1), ...Object.keys(r2)])).sort();
+    let score1 = 0, score2 = 0, avg_score1 = 0, avg_score2 = 0;
+    const comparison = events.map(ev => {
+      const a = r1[ev] || {}, b = r2[ev] || {};
+      const s1 = a.single, s2 = b.single, av1 = a.average, av2 = b.average;
+      let winner = null, avg_winner = null;
+      const b1 = s1 ? Number(s1.best || 0) : 0;
+      const b2 = s2 ? Number(s2.best || 0) : 0;
+      if(b1 > 0 && b2 > 0){ if(b1 < b2){ winner = 1; score1++; } else if(b2 < b1){ winner = 2; score2++; } else winner = 0; }
+      const ab1 = av1 ? Number(av1.best || 0) : 0;
+      const ab2 = av2 ? Number(av2.best || 0) : 0;
+      if(ab1 > 0 && ab2 > 0){ if(ab1 < ab2){ avg_winner = 1; avg_score1++; } else if(ab2 < ab1){ avg_winner = 2; avg_score2++; } else avg_winner = 0; }
+      return { ev, ev_name: (window.EVENTS && window.EVENTS[ev]) || ev, p1_single:s1, p2_single:s2, p1_avg:av1, p2_avg:av2, winner, avg_winner };
+    });
+    return { p1:profileSummary(p1), p2:profileSummary(p2), comparison, score1, score2, avg_score1, avg_score2, total_score1:score1+avg_score1, total_score2:score2+avg_score2 };
+  }
+  window.fetch = async function(input, init){
+    const raw = typeof input === 'string' ? input : (input && input.url) || '';
+    let url;
+    try { url = new URL(raw, location.origin); } catch { return originalFetch(input, init); }
+    const path = url.pathname;
+    if(!path.startsWith('/api/')) return originalFetch(input, init);
+    try{
+      if(path === '/api/stats') return jsonResponse(await getJson('/data/stats.json'));
+      if(path === '/api/records') return jsonResponse(await getJson('/data/records.json'));
+      if(path === '/api/countries') return jsonResponse(await getJson('/data/countries.json'));
+      if(path === '/api/frdb') return jsonResponse(await getJson('/data/frdb.json'));
+      if(path === '/api/search'){
+        const q = (url.searchParams.get('q') || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+        const idx = await getJson('/data/search_index.json');
+        const persons = (idx.persons || []).filter(p => String(p.name||'').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes(q) || String(p.wca_id||'').toLowerCase().includes(q)).slice(0,12);
+        return jsonResponse({ persons });
+      }
+      if(path === '/api/rankings'){
+        const ev = slug(url.searchParams.get('event') || '333');
+        const type = slug(url.searchParams.get('type') || 'single');
+        const region = slug(url.searchParams.get('region') || 'world');
+        return jsonResponse(await getJson(`/data/rankings/${ev}_${type}_${region}.json`));
+      }
+      if(path === '/api/profile'){
+        const id = slug(url.searchParams.get('id') || '');
+        if(!id) return jsonResponse({ error:'id manquant' }, 400);
+        try { return jsonResponse(await getJson(`/data/profiles/${id}.json`)); }
+        catch(e){ return jsonResponse({ error:'Profil non disponible dans la version statique' }, 404); }
+      }
+      if(path === '/api/versus') return jsonResponse(await buildVersus(url.searchParams.get('id1') || '', url.searchParams.get('id2') || ''));
+      if(path === '/api/progression'){
+        const id = slug(url.searchParams.get('id') || '');
+        const ev = slug(url.searchParams.get('event') || '333');
+        try { return jsonResponse(await getJson(`/data/progression/${id}_${ev}.json`)); }
+        catch(e){ return jsonResponse([]); }
+      }
+      if(path === '/api/wr_history'){
+        const ev = slug(url.searchParams.get('event') || '333');
+        return jsonResponse(await getJson(`/data/history/${ev}.json`));
+      }
+      if(path === '/api/fr_competitions') return jsonResponse(await getJson('/data/map/fr_competitions.json'));
+      if(path === '/api/map_status') return jsonResponse({ map_france_exists:true, map_france_path:'/map_france.html', map_france_size:1, competitions_tsv_exists:false, generate_map_exists:false, message:'Carte statique Vercel disponible' });
+      if(path === '/api/activity_rankings'){
+        const metric = slug(url.searchParams.get('metric') || 'competitions');
+        const region = slug(url.searchParams.get('region') || 'world');
+        const gender = slug(url.searchParams.get('gender') || 'all');
+        return jsonResponse(await getJson(`/data/activity/${metric}_${region}_${gender}.json`));
+      }
+      if(path === '/api/active_cubers'){
+        const region = slug(url.searchParams.get('region') || 'FR');
+        return jsonResponse(await getJson(`/data/activity/active_cubers_${region}.json`));
+      }
+      return jsonResponse({ error:'Endpoint statique inconnu : ' + path }, 404);
+    }catch(e){
+      return jsonResponse({ error:String(e && e.message ? e.message : e) }, 500);
+    }
+  };
+})();
+const API = '/api';
 const EVENTS = {
   "333":"3x3x3","222":"2x2x2","444":"4x4x4","555":"5x5x5","666":"6x6x6","777":"7x7x7",
   "333oh":"3x3 One-Handed","333bf":"3x3 Blind","333fm":"Fewest Moves","333mbf":"Multi-Blind",
@@ -1153,7 +1255,7 @@ async function loadStats(){
       <div class="chip">Records : <strong>${recLabel}</strong></div>
       <div class="chip">Historique WR : ${wrLabel}</div>`;
   }catch{
-    $('stats').innerHTML = `<div class="chip">Serveur non joignable : lance start.bat</div>`;
+    $('stats').innerHTML = `<div class="chip">Données statiques indisponibles : relance build_static.bat</div>`;
   }
 }
 
@@ -1162,7 +1264,7 @@ async function loadRecords(){
   if(!allRecords){
     el.innerHTML = loader('Chargement des records…');
     try{ allRecords = await fetch(API+'/records').then(r=>r.json()); }
-    catch{ el.innerHTML = err('Serveur non joignable. Lance start.bat.'); return; }
+    catch{ el.innerHTML = err('Données statiques indisponibles : relance build_static.bat.'); return; }
   }
   const d = allRecords[ev];
   if(!d){ el.innerHTML = err('Aucun record trouvé.'); return; }
