@@ -1053,13 +1053,13 @@ a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{
 
 <script>
 // =====================================================================
-// CubeTracker Static Adapter — Vercel / OVH
-// Intercepte les appels /api/... et les remplace par des fichiers JSON
-// générés par build_static.py dans /data/.
+// CubeTracker Static Adapter COMPACT — Vercel
+// Les appels /api/... sont servis par quelques fichiers bundle JSON.
 // =====================================================================
 window.CUBETRACKER_STATIC = true;
 (function(){
   const originalFetch = window.fetch.bind(window);
+  const bundleCache = {};
   const jsonResponse = (obj, status = 200) => new Response(JSON.stringify(obj), {
     status,
     headers: { 'Content-Type': 'application/json; charset=utf-8' }
@@ -1072,12 +1072,24 @@ window.CUBETRACKER_STATIC = true;
     if(!res.ok) throw new Error('Fichier statique manquant : ' + path);
     return res.json();
   }
+  async function getBundle(name){
+    if(!bundleCache[name]) bundleCache[name] = getJson(`/data/${name}.json`);
+    return bundleCache[name];
+  }
   function profileSummary(p){
     return { wca_id:p.wca_id||'', name:p.name||'', country:p.country||'', iso:p.iso||'' };
   }
+  async function getProfile(id){
+    const sid = slug(id);
+    try{
+      const b = await getBundle('profiles_bundle');
+      if(b.profiles && b.profiles[sid]) return b.profiles[sid];
+    }catch(e){}
+    return getJson(`/data/profiles/${sid}.json`);
+  }
   async function buildVersus(id1, id2){
-    const p1 = await getJson(`/data/profiles/${slug(id1)}.json`);
-    const p2 = await getJson(`/data/profiles/${slug(id2)}.json`);
+    const p1 = await getProfile(id1);
+    const p2 = await getProfile(id2);
     const r1 = p1.personal_records || {};
     const r2 = p2.personal_records || {};
     const events = Array.from(new Set([...Object.keys(r1), ...Object.keys(r2)])).sort();
@@ -1114,39 +1126,43 @@ window.CUBETRACKER_STATIC = true;
         return jsonResponse({ persons });
       }
       if(path === '/api/rankings'){
-        const ev = slug(url.searchParams.get('event') || '333');
-        const type = slug(url.searchParams.get('type') || 'single');
-        const region = slug(url.searchParams.get('region') || 'world');
-        return jsonResponse(await getJson(`/data/rankings/${ev}_${type}_${region}.json`));
+        const key = `${slug(url.searchParams.get('event') || '333')}_${slug(url.searchParams.get('type') || 'single')}_${slug(url.searchParams.get('region') || 'world')}`;
+        const b = await getBundle('rankings_bundle');
+        return jsonResponse(b.rankings && b.rankings[key] ? b.rankings[key] : { results: [] });
       }
       if(path === '/api/profile'){
-        const id = slug(url.searchParams.get('id') || '');
+        const id = url.searchParams.get('id') || '';
         if(!id) return jsonResponse({ error:'id manquant' }, 400);
-        try { return jsonResponse(await getJson(`/data/profiles/${id}.json`)); }
-        catch(e){ return jsonResponse({ error:'Profil non disponible dans la version statique' }, 404); }
+        try { return jsonResponse(await getProfile(id)); }
+        catch(e){ return jsonResponse({ error:'Profil non disponible dans la version statique compacte' }, 404); }
       }
       if(path === '/api/versus') return jsonResponse(await buildVersus(url.searchParams.get('id1') || '', url.searchParams.get('id2') || ''));
       if(path === '/api/progression'){
-        const id = slug(url.searchParams.get('id') || '');
-        const ev = slug(url.searchParams.get('event') || '333');
-        try { return jsonResponse(await getJson(`/data/progression/${id}_${ev}.json`)); }
-        catch(e){ return jsonResponse([]); }
+        const key = `${slug(url.searchParams.get('id') || '')}_${slug(url.searchParams.get('event') || '333')}`;
+        try{
+          const b = await getBundle('progression_bundle');
+          return jsonResponse(b.progressions && b.progressions[key] ? b.progressions[key] : []);
+        }catch(e){
+          try { return jsonResponse(await getJson(`/data/progression/${key}.json`)); }
+          catch(e2){ return jsonResponse([]); }
+        }
       }
       if(path === '/api/wr_history'){
         const ev = slug(url.searchParams.get('event') || '333');
-        return jsonResponse(await getJson(`/data/history/${ev}.json`));
+        const b = await getBundle('history_bundle');
+        return jsonResponse(b.history && b.history[ev] ? b.history[ev] : { world: [], france: [] });
       }
       if(path === '/api/fr_competitions') return jsonResponse(await getJson('/data/map/fr_competitions.json'));
       if(path === '/api/map_status') return jsonResponse({ map_france_exists:true, map_france_path:'/map_france.html', map_france_size:1, competitions_tsv_exists:false, generate_map_exists:false, message:'Carte statique Vercel disponible' });
       if(path === '/api/activity_rankings'){
-        const metric = slug(url.searchParams.get('metric') || 'competitions');
-        const region = slug(url.searchParams.get('region') || 'world');
-        const gender = slug(url.searchParams.get('gender') || 'all');
-        return jsonResponse(await getJson(`/data/activity/${metric}_${region}_${gender}.json`));
+        const key = `${slug(url.searchParams.get('metric') || 'competitions')}_${slug(url.searchParams.get('region') || 'world')}_${slug(url.searchParams.get('gender') || 'all')}`;
+        const b = await getBundle('activity_bundle');
+        return jsonResponse(b.activity && b.activity[key] ? b.activity[key] : { results: [] });
       }
       if(path === '/api/active_cubers'){
-        const region = slug(url.searchParams.get('region') || 'FR');
-        return jsonResponse(await getJson(`/data/activity/active_cubers_${region}.json`));
+        const key = `active_cubers_${slug(url.searchParams.get('region') || 'FR')}`;
+        const b = await getBundle('activity_bundle');
+        return jsonResponse(b.activity && b.activity[key] ? b.activity[key] : { cubers: [], loading:false });
       }
       return jsonResponse({ error:'Endpoint statique inconnu : ' + path }, 404);
     }catch(e){
